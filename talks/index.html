@@ -5,15 +5,30 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Animations</title>
 <style>
+  :root {
+    --fg: #222;
+    --muted: #555;
+    --link: #1a5fb4;
+    --bg: #fffdf9;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --fg: #d8d8d8;
+      --muted: #9a9a9a;
+      --link: #7cb0e8;
+      --bg: #16181d;
+    }
+  }
   body {
     font-family: Georgia, serif;
     max-width: 46rem;
     margin: 4rem auto;
-    padding: 0 1rem;
-    color: #222;
+    padding: 0 1.2rem;
+    color: var(--fg);
+    background: var(--bg);
     line-height: 1.55;
   }
-  a { color: #1a5fb4; }
+  a { color: var(--link); }
   h1 { margin-bottom: 0.2rem; }
   .anim { margin: 3rem 0; }
   .anim video {
@@ -25,7 +40,7 @@
   }
   .caption {
     font-size: 0.9rem;
-    color: #555;
+    color: var(--muted);
     margin-top: 0.6rem;
   }
 </style>

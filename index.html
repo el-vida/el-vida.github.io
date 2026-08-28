@@ -3,18 +3,62 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Elija Vida, PhD student at EPFL and Idiap. Spiking neural networks, speech recognition, neuromorphic computing.">
 <title>Elija Vida</title>
 <style>
-  body { font-family: Georgia, serif; max-width: 42rem; margin: 4rem auto; padding: 0 1rem; color: #222; }
-  a { color: #1a5fb4; }
+  :root {
+    --fg: #222;
+    --muted: #555;
+    --link: #1a5fb4;
+    --rule: #ddd;
+    --bg: #fffdf9;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --fg: #d8d8d8;
+      --muted: #9a9a9a;
+      --link: #7cb0e8;
+      --rule: #333;
+      --bg: #16181d;
+    }
+  }
+  body {
+    font-family: Georgia, serif;
+    max-width: 42rem;
+    margin: 4rem auto;
+    padding: 0 1.2rem;
+    color: var(--fg);
+    background: var(--bg);
+    line-height: 1.6;
+  }
+  a { color: var(--link); }
+  h1 { margin-bottom: 0.1rem; font-size: 1.9rem; }
+  .role { color: var(--muted); margin-top: 0; }
+  nav { margin: 1.6rem 0 2rem; padding-bottom: 1.2rem; border-bottom: 1px solid var(--rule); }
+  nav a { margin-right: 1.4rem; }
+  .contact { color: var(--muted); font-size: 0.92rem; margin-top: 2.4rem; }
 </style>
 </head>
 <body>
 <h1>Elija Vida</h1>
-<p>PhD student, EPFL / Idiap Research Institute. Spiking neural networks,
-neuromorphic computing, speech recognition.</p>
-<ul>
-  <li><a href="talks/">Talk animations</a></li>
-</ul>
+<p class="role">PhD student, EPFL &amp; Idiap Research Institute</p>
+
+<nav>
+  <a href="talks/">Animations</a>
+  <a href="resume.html">Resume</a>
+  <a href="https://github.com/el-vida">GitHub</a>
+</nav>
+
+<p>I am a PhD student at EPFL and the Idiap Research Institute in Martigny.
+I work on spiking neural networks: speech recognition with spiking
+architectures, noise in neuron models as a resource for learning, and
+dendritic computation. At the moment I am building spiking generative
+models for speech.</p>
+
+<p>On the <a href="talks/">animations page</a> I collect short explanatory
+videos I make for talks, on topics like leaky integrate-and-fire neurons,
+CTC, and diffusion models.</p>
+
+<p class="contact">elija.vida@epfl.ch</p>
 </body>
 </html>

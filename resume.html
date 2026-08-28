@@ -38,8 +38,10 @@
     padding-bottom: 0.3rem;
     border-bottom: 1px solid var(--rule);
   }
+  h3 { font-size: 1rem; margin-bottom: 0.2rem; }
   .role { color: var(--muted); margin-top: 0; }
   .entry { margin: 1rem 0; }
+  .entry p { margin-top: 0.2rem; }
   .when { color: var(--muted); font-size: 0.9rem; }
 </style>
 </head>
@@ -54,17 +56,55 @@ speech recognition on LibriSpeech and TIMIT with spiking architectures, the
 role of noise in spiking neuron models, dendritic computation, and spiking
 generative models for speech.</p>
 
+<h2>Projects</h2>
+
+<div class="entry">
+  <h3>Spiking speech recognition</h3>
+  <p>End-to-end speech recognition with spiking encoders in SpeechBrain, on
+  TIMIT and LibriSpeech. Hybrid architectures that combine spiking and
+  non-spiking recurrent layers, evaluated over multiple seeds against
+  published baselines, with analyses of recurrence stability and energy
+  cost. Results in preparation.</p>
+</div>
+
+<div class="entry">
+  <h3>Noise as a resource in spiking neurons</h3>
+  <p>How stochastic firing interacts with learning: noisy neuron models
+  with the noise-driven learning rule, trainable noise scales, and the
+  effect of noise schedules on accuracy and calibration on speech-command
+  benchmarks. Includes an independent replication of the noisy spiking
+  network of Ma et al. on CIFAR-10.</p>
+</div>
+
+<div class="entry">
+  <h3>Dendritic processing units</h3>
+  <p>Spiking networks with dendritic branches and heterogeneous,
+  RRAM-realistic delays, applied to temporal benchmarks such as the Spiking
+  Heidelberg Digits and biomedical time series. Started as my MSc thesis;
+  now continued independently toward publication.</p>
+</div>
+
+<div class="entry">
+  <h3>Spiking generative models</h3>
+  <p>Diffusion and flow matching as a route to spiking speech synthesis,
+  beginning with image generation as a controlled testbed. Early stage;
+  the topic of my PhD candidacy project.</p>
+</div>
+
 <h2>Education</h2>
 <div class="entry">
   <strong>PhD, EPFL</strong>, hosted at the Idiap Research Institute,
   Martigny<br>
   <span class="when">ongoing</span>
 </div>
-
-<!-- TODO: fill in with real dates and institutions:
 <div class="entry">
-  <strong>MSc, [institution]</strong>, thesis on dendritic processing in
-  spiking neural networks<br>
+  <strong>MSc</strong>, thesis on dendritic processing units in spiking
+  neural networks
+</div>
+
+<!-- TODO, waiting on real facts (institutions, years, programs):
+<div class="entry">
+  <strong>MSc, [institution]</strong><br>
   <span class="when">[years]</span>
 </div>
 <div class="entry">
@@ -74,7 +114,6 @@ generative models for speech.</p>
 
 <h2>Publications</h2>
 <h2>Experience</h2>
-<h2>Skills</h2>
 -->
 
 <h2>Links</h2>

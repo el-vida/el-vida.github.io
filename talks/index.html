@@ -3,17 +3,52 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Talk animations</title>
+<title>Animations</title>
 <style>
-  body { font-family: Georgia, serif; max-width: 42rem; margin: 4rem auto; padding: 0 1rem; color: #222; }
+  body {
+    font-family: Georgia, serif;
+    max-width: 46rem;
+    margin: 4rem auto;
+    padding: 0 1rem;
+    color: #222;
+    line-height: 1.55;
+  }
   a { color: #1a5fb4; }
+  h1 { margin-bottom: 0.2rem; }
+  .anim { margin: 3rem 0; }
+  .anim video {
+    width: 100%;
+    display: block;
+    border-radius: 10px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
+    background: #111318;
+  }
+  .caption {
+    font-size: 0.9rem;
+    color: #555;
+    margin-top: 0.6rem;
+  }
 </style>
 </head>
 <body>
-<h1>Talk animations</h1>
-<p>Interactive decks (arrow keys to advance).</p>
-<ul>
-  <li><a href="LIFDynamics.html">LIF neuron dynamics</a></li>
-</ul>
+<p><a href="../">&larr; home</a></p>
+<h1>Animations</h1>
+<p>Concept animations for talks, made with Manim. Each one also exists as a
+slide deck for presenting (linked below the video).</p>
+
+<div class="anim">
+  <h2>LIF neuron dynamics</h2>
+  <p>A leaky integrate-and-fire neuron driven by a random input spike train:
+  the membrane potential integrates each incoming spike, leaks between them,
+  and emits an output spike with a reset whenever it reaches the threshold.</p>
+  <video autoplay muted loop playsinline controls
+         src="media/LIFDynamics.mp4"></video>
+  <p class="caption">
+    Blue: membrane potential. Orange: input spikes and threshold.
+    Green: output spikes.
+    <a href="LIFDynamics.html">Present as full-screen deck</a>
+    (advance with arrow keys).
+  </p>
+</div>
 </body>
 </html>

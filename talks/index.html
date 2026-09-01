@@ -53,12 +53,15 @@ slide deck for presenting (linked below the video).</p>
 
 <div class="anim">
   <h2>Noisy vs deterministic spiking neurons</h2>
-  <p>Why the surrogate gradient is not a hack. A deterministic neuron's spike
-  is a hard step with no usable derivative, so a smooth surrogate is imposed
-  by hand. Make the neuron stochastic through escape noise and the trials
-  average into a smooth expected output whose exact derivative is that same
-  bump, with the surrogate width playing the role of the noise scale. After
-  Gygax and Zenke (2025), Fig. 1C,D.</p>
+  <p>Why the surrogate gradient is not a hack. The opening feeds the same
+  input and membrane trace to both neurons: the deterministic one spikes
+  identically on every trial, the escape-noise one differently each time,
+  equivalently a threshold redrawn from a distribution at every step. A
+  deterministic neuron's spike is a hard step with no usable derivative, so
+  a smooth surrogate is imposed by hand. Make the neuron stochastic and the
+  trials average into a smooth expected output whose exact derivative is
+  that same bump, with the surrogate width playing the role of the noise
+  scale. After Gygax and Zenke (2025), Fig. 1C,D.</p>
   <video autoplay muted loop playsinline controls
          src="media/NoisyVsDeterministic.mp4"></video>
   <p class="caption">

@@ -73,6 +73,26 @@ slide deck for presenting (linked below the video).</p>
 </div>
 
 <div class="anim">
+  <h2>DDPM on MNIST</h2>
+  <p>The two halves of a denoising diffusion model, on real MNIST digits.
+  The forward process corrupts a digit with Gaussian noise step by step;
+  every frame is an exact sample of the closed-form marginal
+  q(x&#8202;<sub>t</sub>&#8202;|&#8202;x&#8202;<sub>0</sub>) under a linear
+  schedule with T&nbsp;=&nbsp;1000. The reverse pass then plays three
+  trajectories backwards, three noise samples resolving into three
+  different digits, as an illustration of the learned denoiser
+  p<sub>&theta;</sub> (no trained model in the loop).</p>
+  <video autoplay muted loop playsinline controls
+         src="media/DDPMMnist.mp4"></video>
+  <p class="caption">
+    Forward: exact DDPM marginals on a real digit. Reverse: the same
+    trajectories reversed, labeled as illustration.
+    <a href="DDPMMnist.html">Present as full-screen deck</a>
+    (advance with arrow keys).
+  </p>
+</div>
+
+<div class="anim">
   <h2>LIF neuron dynamics</h2>
   <p>A leaky integrate-and-fire neuron driven by a random input spike train:
   the membrane potential integrates each incoming spike, leaks between them,

@@ -93,6 +93,43 @@ slide deck for presenting (linked below the video).</p>
 </div>
 
 <div class="anim">
+  <h2>The ASR pipeline</h2>
+  <p>From sound to text on a real utterance: TIMIT's SA1 sentence. The raw
+  16&nbsp;kHz waveform is cut into 25&nbsp;ms windows with a 10&nbsp;ms hop;
+  a cursor sweeps the signal while the actual 80-band log-mel spectrogram
+  (computed from this recording) builds up column by column. The features
+  then flow through the standard chain: encoder, per-frame phone posteriors,
+  CTC decoding, and out comes the sentence's true transcript.</p>
+  <video autoplay muted loop playsinline controls
+         src="media/ASRPipeline.mp4"></video>
+  <p class="caption">
+    Waveform and spectrogram are computed from the real recording; the
+    posterior stage is schematic.
+    <a href="ASRPipeline.html">Present as full-screen deck</a>
+    (advance with arrow keys).
+  </p>
+</div>
+
+<div class="anim">
+  <h2>CTC on the word "see"</h2>
+  <p>How CTC turns per-frame predictions into a transcript without knowing
+  the alignment. One alignment of ten frames collapses by the two rules
+  (merge repeats, then drop the blank &empty;); many alignments give the
+  same word, and CTC sums the probability of all of them, organized as
+  paths through a lattice of letters interleaved with blanks. The double
+  "e" shows why the blank exists: the skip between two identical letters
+  is forbidden, or they would merge. Layout after Hannun (2017).</p>
+  <video autoplay muted loop playsinline controls
+         src="media/CTCAlignment.mp4"></video>
+  <p class="caption">
+    Yellow: one valid path through the lattice. Gray: other paths in the
+    sum. Red: the forbidden same-letter skip.
+    <a href="CTCAlignment.html">Present as full-screen deck</a>
+    (advance with arrow keys).
+  </p>
+</div>
+
+<div class="anim">
   <h2>LIF neuron dynamics</h2>
   <p>A leaky integrate-and-fire neuron driven by a random input spike train:
   the membrane potential integrates each incoming spike, leaks between them,

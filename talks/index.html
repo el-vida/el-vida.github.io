@@ -73,6 +73,25 @@ slide deck for presenting (linked below the video).</p>
 </div>
 
 <div class="anim">
+  <h2>Where noise enters a spiking neuron</h2>
+  <p>Three places to inject noise into the same LIF neuron, and three
+  different behaviors. Input noise rides in with the features and is
+  filtered by the synapse and membrane. Membrane noise enters the state
+  directly and accumulates through the recurrence. Threshold noise (escape
+  noise) leaves the membrane trace completely clean and randomizes only the
+  Bernoulli spike draw near threshold. All three panels run the same input
+  spike train; the gray underlay is the deterministic reference, and three
+  trials of output spikes show each locus's signature.</p>
+  <video autoplay muted loop playsinline controls
+         src="media/NoiseLoci.mp4"></video>
+  <p class="caption">
+    Orange: input noise. Pink: membrane noise. Yellow: threshold noise.
+    <a href="NoiseLoci.html">Present as full-screen deck</a>
+    (advance with arrow keys).
+  </p>
+</div>
+
+<div class="anim">
   <h2>DDPM on MNIST</h2>
   <p>The two halves of a denoising diffusion model, on real MNIST digits.
   The forward process corrupts a digit with Gaussian noise step by step;

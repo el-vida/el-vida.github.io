@@ -73,6 +73,28 @@ slide deck for presenting (linked below the video).</p>
 </div>
 
 <div class="anim">
+  <h2>AdLIF: a LIF neuron with a brake</h2>
+  <p>The adaptive LIF neuron adds one slow variable w that acts as a brake:
+  every output spike charges it, it leaks slowly, and it subtracts from the
+  drive. Three consequences, each shown against a plain LIF under identical
+  input. Under constant drive the LIF fires like a metronome while the
+  AdLIF's rhythm stretches (spike-frequency adaptation). Under input steps
+  the AdLIF answers at the changes and falls quiet during sustained levels,
+  which is why adaptation helps for speech onsets. And below threshold the
+  coupling makes the membrane resonate: a kicked membrane rebounds below
+  rest, and the frequency response is band-pass where the LIF is low-pass,
+  with a preferred input rhythm.</p>
+  <video autoplay muted loop playsinline controls
+         src="media/AdLIFDynamics.mp4"></video>
+  <p class="caption">
+    Blue: membrane potential. Pink: the adaptation variable w. Green:
+    output spikes.
+    <a href="AdLIFDynamics.html">Present as full-screen deck</a>
+    (advance with arrow keys).
+  </p>
+</div>
+
+<div class="anim">
   <h2>Where noise enters a spiking neuron</h2>
   <p>Three places to inject noise into the same LIF neuron, and three
   different behaviors. Input noise rides in with the features and is

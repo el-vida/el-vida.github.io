@@ -200,7 +200,67 @@ topic to open it; each animation also exists as a slide deck for presenting
 </details>
 
 <details class="topic">
-<summary><h2>Generative models and inference</h2><span class="count">2 animations</span></summary>
+<summary><h2>Generative models and inference</h2><span class="count">5 animations</span></summary>
+
+<div class="anim">
+  <h2>What "intractable" means</h2>
+  <p>The evidence integral in one dimension falls to twenty Riemann
+  rectangles. In d dimensions the same grid costs 20<sup>d</sup>
+  evaluations, a straight line on a log axis that crosses the number of
+  atoms in the observable universe (about 10<sup>80</sup>) near
+  d&nbsp;=&nbsp;62 and reaches 10<sup>130</sup> at the size of a small VAE
+  latent. The second villain: in high dimension the probability mass hides
+  in a tiny region that no grid point hits. What stays easy is evaluating
+  the joint at a single point, and that pointwise query is exactly the
+  resource that variational inference and MCMC spend wisely.</p>
+  <video muted loop playsinline controls preload="metadata"
+         src="media/Intractability.mp4"></video>
+  <p class="caption">
+    Red: the exponential grid cost. Yellow: the atoms-in-the-universe line
+    and where the mass hides.
+    <a href="Intractability.html">Present as full-screen deck</a>
+    (advance with arrow keys).
+  </p>
+</div>
+
+<div class="anim">
+  <h2>MAP estimation on a coin</h2>
+  <p>Three flips, three heads: maximum likelihood concludes the coin always
+  lands heads. Multiplying in a near-fair Beta prior and taking the new
+  peak gives the MAP estimate, a sane 0.64. Then the trap: two posteriors
+  with the same mode but very different widths, one loose belief and one
+  locked in, are indistinguishable to MAP, because a point estimate throws
+  away the shape. The closing identity reads MAP as regularized maximum
+  likelihood: a Gaussian prior is weight decay.</p>
+  <video muted loop playsinline controls preload="metadata"
+         src="media/MAPEstimate.mp4"></video>
+  <p class="caption">
+    White: likelihood. Orange: prior. Blue and pink: posteriors. Green:
+    the MAP estimate.
+    <a href="MAPEstimate.html">Present as full-screen deck</a>
+    (advance with arrow keys).
+  </p>
+</div>
+
+<div class="anim">
+  <h2>KL divergence</h2>
+  <p>The price of believing q when p is true. A live readout shows the KL
+  growing nonlinearly as q slides away from p; the number is then unpacked
+  as a weighted sum, green-minus-blue signed area of
+  q&#8202;log(q/p). Swapping the arguments changes the price (1.17 vs 1.82
+  for the same pair), so KL is not a distance. The finale fits a Gaussian
+  to a bimodal target in both directions: minimizing KL(q&#8214;p) hugs one
+  mode (zero-forcing, the variational choice), minimizing KL(p&#8214;q)
+  spans everything (mass-covering).</p>
+  <video muted loop playsinline controls preload="metadata"
+         src="media/KLDivergence.mp4"></video>
+  <p class="caption">
+    Blue: p. Green: q. The two finale panels show the same target fitted
+    under the two KL directions.
+    <a href="KLDivergence.html">Present as full-screen deck</a>
+    (advance with arrow keys).
+  </p>
+</div>
 
 <div class="anim">
   <h2>Variational inference and the ELBO</h2>

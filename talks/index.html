@@ -9,6 +9,7 @@
     --fg: #222;
     --muted: #555;
     --link: #1a5fb4;
+    --rule: #ddd;
     --bg: #fffdf9;
   }
   @media (prefers-color-scheme: dark) {
@@ -16,6 +17,7 @@
       --fg: #d8d8d8;
       --muted: #9a9a9a;
       --link: #7cb0e8;
+      --rule: #333;
       --bg: #16181d;
     }
   }
@@ -30,7 +32,28 @@
   }
   a { color: var(--link); }
   h1 { margin-bottom: 0.2rem; }
-  .anim { margin: 3rem 0; }
+  details.topic {
+    margin: 1.6rem 0;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 0.6rem;
+  }
+  details.topic > summary {
+    cursor: pointer;
+    list-style-position: outside;
+    padding: 0.4rem 0;
+  }
+  details.topic > summary:hover h2 { color: var(--link); }
+  details.topic > summary h2 {
+    display: inline;
+    font-size: 1.35rem;
+    margin: 0;
+  }
+  details.topic > summary .count {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-left: 0.6rem;
+  }
+  .anim { margin: 2.2rem 0 2.8rem; }
   .anim video {
     width: 100%;
     display: block;
@@ -48,29 +71,12 @@
 <body>
 <p><a href="../">&larr; home</a></p>
 <h1>Animations</h1>
-<p>Concept animations for talks, made with Manim. Each one also exists as a
-slide deck for presenting (linked below the video).</p>
+<p>Concept animations for talks, made with Manim, grouped by topic. Click a
+topic to open it; each animation also exists as a slide deck for presenting
+(linked below its video).</p>
 
-<div class="anim">
-  <h2>Noisy vs deterministic spiking neurons</h2>
-  <p>Why the surrogate gradient is not a hack. The opening feeds the same
-  input and membrane trace to both neurons: the deterministic one spikes
-  identically on every trial, the escape-noise one differently each time,
-  equivalently a threshold redrawn from a distribution at every step. A
-  deterministic neuron's spike is a hard step with no usable derivative, so
-  a smooth surrogate is imposed by hand. Make the neuron stochastic and the
-  trials average into a smooth expected output whose exact derivative is
-  that same bump, with the surrogate width playing the role of the noise
-  scale. After Gygax and Zenke (2025), Fig. 1C,D.</p>
-  <video autoplay muted loop playsinline controls
-         src="media/NoisyVsDeterministic.mp4"></video>
-  <p class="caption">
-    White: deterministic step and identical trials. Blue: imposed surrogate.
-    Yellow: escape-noise trials, their mean, and the exact gradient.
-    <a href="NoisyVsDeterministic.html">Present as full-screen deck</a>
-    (advance with arrow keys).
-  </p>
-</div>
+<details class="topic" open>
+<summary><h2>Spiking neural networks</h2><span class="count">4 animations</span></summary>
 
 <div class="anim">
   <h2>AdLIF: a LIF neuron with a brake</h2>
@@ -84,7 +90,7 @@ slide deck for presenting (linked below the video).</p>
   coupling makes the membrane resonate: a kicked membrane rebounds below
   rest, and the frequency response is band-pass where the LIF is low-pass,
   with a preferred input rhythm.</p>
-  <video autoplay muted loop playsinline controls
+  <video muted loop playsinline controls preload="metadata"
          src="media/AdLIFDynamics.mp4"></video>
   <p class="caption">
     Blue: membrane potential. Pink: the adaptation variable w. Green:
@@ -104,7 +110,7 @@ slide deck for presenting (linked below the video).</p>
   Bernoulli spike draw near threshold. All three panels run the same input
   spike train; the gray underlay is the deterministic reference, and three
   trials of output spikes show each locus's signature.</p>
-  <video autoplay muted loop playsinline controls
+  <video muted loop playsinline controls preload="metadata"
          src="media/NoiseLoci.mp4"></video>
   <p class="caption">
     Orange: input noise. Pink: membrane noise. Yellow: threshold noise.
@@ -114,24 +120,45 @@ slide deck for presenting (linked below the video).</p>
 </div>
 
 <div class="anim">
-  <h2>DDPM on MNIST</h2>
-  <p>The two halves of a denoising diffusion model, on real MNIST digits.
-  The forward process corrupts a digit with Gaussian noise step by step;
-  every frame is an exact sample of the closed-form marginal
-  q(x&#8202;<sub>t</sub>&#8202;|&#8202;x&#8202;<sub>0</sub>) under a linear
-  schedule with T&nbsp;=&nbsp;1000. The reverse pass then plays three
-  trajectories backwards, three noise samples resolving into three
-  different digits, as an illustration of the learned denoiser
-  p<sub>&theta;</sub> (no trained model in the loop).</p>
-  <video autoplay muted loop playsinline controls
-         src="media/DDPMMnist.mp4"></video>
+  <h2>Noisy vs deterministic spiking neurons</h2>
+  <p>Why the surrogate gradient is not a hack. The opening feeds the same
+  input and membrane trace to both neurons: the deterministic one spikes
+  identically on every trial, the escape-noise one differently each time,
+  equivalently a threshold redrawn from a distribution at every step. A
+  deterministic neuron's spike is a hard step with no usable derivative, so
+  a smooth surrogate is imposed by hand. Make the neuron stochastic and the
+  trials average into a smooth expected output whose exact derivative is
+  that same bump, with the surrogate width playing the role of the noise
+  scale. After Gygax and Zenke (2025), Fig. 1C,D.</p>
+  <video muted loop playsinline controls preload="metadata"
+         src="media/NoisyVsDeterministic.mp4"></video>
   <p class="caption">
-    Forward: exact DDPM marginals on a real digit. Reverse: the same
-    trajectories reversed, labeled as illustration.
-    <a href="DDPMMnist.html">Present as full-screen deck</a>
+    White: deterministic step and identical trials. Blue: imposed surrogate.
+    Yellow: escape-noise trials, their mean, and the exact gradient.
+    <a href="NoisyVsDeterministic.html">Present as full-screen deck</a>
     (advance with arrow keys).
   </p>
 </div>
+
+<div class="anim">
+  <h2>LIF neuron dynamics</h2>
+  <p>A leaky integrate-and-fire neuron driven by a random input spike train:
+  the membrane potential integrates each incoming spike, leaks between them,
+  and emits an output spike with a reset whenever it reaches the threshold.</p>
+  <video muted loop playsinline controls preload="metadata"
+         src="media/LIFDynamics.mp4"></video>
+  <p class="caption">
+    Blue: membrane potential. Orange: input spikes and threshold.
+    Green: output spikes.
+    <a href="LIFDynamics.html">Present as full-screen deck</a>
+    (advance with arrow keys).
+  </p>
+</div>
+
+</details>
+
+<details class="topic">
+<summary><h2>Speech recognition</h2><span class="count">2 animations</span></summary>
 
 <div class="anim">
   <h2>The ASR pipeline</h2>
@@ -141,7 +168,7 @@ slide deck for presenting (linked below the video).</p>
   (computed from this recording) builds up column by column. The features
   then flow through the standard chain: encoder, per-frame phone posteriors,
   CTC decoding, and out comes the sentence's true transcript.</p>
-  <video autoplay muted loop playsinline controls
+  <video muted loop playsinline controls preload="metadata"
          src="media/ASRPipeline.mp4"></video>
   <p class="caption">
     Waveform and spectrogram are computed from the real recording; the
@@ -160,7 +187,7 @@ slide deck for presenting (linked below the video).</p>
   paths through a lattice of letters interleaved with blanks. The double
   "e" shows why the blank exists: the skip between two identical letters
   is forbidden, or they would merge. Layout after Hannun (2017).</p>
-  <video autoplay muted loop playsinline controls
+  <video muted loop playsinline controls preload="metadata"
          src="media/CTCAlignment.mp4"></video>
   <p class="caption">
     Yellow: one valid path through the lattice. Gray: other paths in the
@@ -170,19 +197,67 @@ slide deck for presenting (linked below the video).</p>
   </p>
 </div>
 
+</details>
+
+<details class="topic">
+<summary><h2>Generative models and inference</h2><span class="count">2 animations</span></summary>
+
 <div class="anim">
-  <h2>LIF neuron dynamics</h2>
-  <p>A leaky integrate-and-fire neuron driven by a random input spike train:
-  the membrane potential integrates each incoming spike, leaks between them,
-  and emits an output spike with a reset whenever it reaches the threshold.</p>
-  <video autoplay muted loop playsinline controls
-         src="media/LIFDynamics.mp4"></video>
+  <h2>Variational inference and the ELBO</h2>
+  <p>Why the posterior is out of reach (the evidence integral), and what to
+  do about it. On a bimodal 1D posterior, the deterministic classics come
+  first: MAP is a single point, and Laplace wraps a Gaussian around that
+  point's curvature; both are blind to everything away from the mode. Then
+  variational inference turns the problem into optimization: a Gaussian
+  q is fitted by real gradient ascent on the ELBO, and a bar climbs toward
+  the fixed evidence line log&nbsp;p(x) while the gap, which is exactly
+  KL(q&#8202;&#8214;&#8202;p), shrinks. The run ends honestly: q locks onto
+  the nearer, smaller mode and the gap stays open, because a single
+  Gaussian cannot match a mixture and the KL direction is zero-forcing.
+  The last slide rearranges the same identity into the
+  reconstruction-minus-KL form that trains VAEs and diffusion models.</p>
+  <video muted loop playsinline controls preload="metadata"
+         src="media/VariationalInference.mp4"></video>
   <p class="caption">
-    Blue: membrane potential. Orange: input spikes and threshold.
-    Green: output spikes.
-    <a href="LIFDynamics.html">Present as full-screen deck</a>
+    Blue: the true posterior. Red: MAP and the KL gap. Orange: Laplace.
+    Green: the variational q and the ELBO.
+    <a href="VariationalInference.html">Present as full-screen deck</a>
     (advance with arrow keys).
   </p>
 </div>
+
+<div class="anim">
+  <h2>DDPM on MNIST</h2>
+  <p>The two halves of a denoising diffusion model, on real MNIST digits.
+  The forward process corrupts a digit with Gaussian noise step by step;
+  every frame is an exact sample of the closed-form marginal
+  q(x&#8202;<sub>t</sub>&#8202;|&#8202;x&#8202;<sub>0</sub>) under a linear
+  schedule with T&nbsp;=&nbsp;1000. The reverse pass then plays three
+  trajectories backwards, three noise samples resolving into three
+  different digits, as an illustration of the learned denoiser
+  p<sub>&theta;</sub> (no trained model in the loop).</p>
+  <video muted loop playsinline controls preload="metadata"
+         src="media/DDPMMnist.mp4"></video>
+  <p class="caption">
+    Forward: exact DDPM marginals on a real digit. Reverse: the same
+    trajectories reversed, labeled as illustration.
+    <a href="DDPMMnist.html">Present as full-screen deck</a>
+    (advance with arrow keys).
+  </p>
+</div>
+
+</details>
+
+<script>
+  document.querySelectorAll("details.topic").forEach(function (d) {
+    function sync() {
+      d.querySelectorAll("video").forEach(function (v) {
+        if (d.open) { v.play().catch(function () {}); } else { v.pause(); }
+      });
+    }
+    d.addEventListener("toggle", sync);
+    sync();
+  });
+</script>
 </body>
 </html>

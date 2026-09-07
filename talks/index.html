@@ -223,7 +223,7 @@ topic to open it; each animation also exists as a slide deck for presenting
 </details>
 
 <details class="topic">
-<summary><h2>Generative models and inference</h2><span class="count">5 animations</span></summary>
+<summary><h2>Generative models and inference</h2><span class="count">8 animations</span></summary>
 
 <div class="anim">
   <h2>What "intractable" means</h2>
@@ -335,6 +335,69 @@ topic to open it; each animation also exists as a slide deck for presenting
     (advance with arrow keys) &middot;
     <a href="../demos/spiking-digit-jukebox/">listen: Spiking Digit
     Jukebox</a>.
+  </p>
+</div>
+
+<div class="anim">
+  <h2>Flow matching vs diffusion</h2>
+  <p>Generation as transport: carry noise samples to the data. Diffusion
+  does it with a stochastic walk; here the data is a two-Gaussian mixture,
+  whose diffused score is closed form, so the wiggly reverse-SDE
+  trajectories are exact simulations with no trained model anywhere (mean
+  path length about 31 units for a 2.5-unit trip). Flow matching draws the
+  straight line instead: x<sub>t</sub> = (1&minus;t)x&#8202;<sub>0</sub> +
+  t&#8202;x&#8202;<sub>1</sub>, constant velocity. The payoff slide
+  integrates the curved probability-flow ODE with 4 Euler steps (several
+  samples visibly miss the data) while a straight path is exact at any step
+  count. Same framework underneath; diffusion is one choice of path
+  (Lipman et al., 2023).</p>
+  <video muted loop playsinline controls preload="metadata"
+         src="media/FlowMatching.mp4"></video>
+  <p class="caption">
+    Blue: exact reverse-SDE trajectories. Green: straight conditional
+    paths. Red: 4-step Euler endpoints.
+    <a href="FlowMatching.html">Present as full-screen deck</a>
+    (advance with arrow keys).
+  </p>
+</div>
+
+<div class="anim">
+  <h2>Discrete vs continuous diffusion</h2>
+  <p>One pixel against one letter. A continuous state is corrupted by tiny
+  Gaussian nudges (the exact DDPM forward chain, plotted for a single
+  coordinate); a discrete token moves by sudden Markov jumps through a
+  finite alphabet (a piecewise-constant path). The same contrast plays out
+  on real data, an MNIST digit dissolving next to a word whose letters get
+  replaced, and it changes what the reverse model must output: a direction
+  in space (score or velocity) versus a distribution over symbols
+  (transition probabilities, trained by cross-entropy).</p>
+  <video muted loop playsinline controls preload="metadata"
+         src="media/DiscreteVsContinuous.mp4"></video>
+  <p class="caption">
+    Blue: continuous sample paths. Yellow: token jump paths.
+    <a href="DiscreteVsContinuous.html">Present as full-screen deck</a>
+    (advance with arrow keys).
+  </p>
+</div>
+
+<div class="anim">
+  <h2>Diffusion language models: uniform vs masked</h2>
+  <p>Two ways to gradually destroy a sentence, run on five real tokens.
+  Uniform corruption lets any token become any word, again and again;
+  masked (absorbing) corruption only removes: once a token becomes [MASK]
+  it stays there. Reading the two histories upward is generation, and the
+  difference jumps out: the uniform reverse revisits the same slot
+  repeatedly, the masked reverse decides each token exactly once, filling
+  blanks in any order like BERT-style infilling (illustrated with the known
+  sentence; a trained model predicts each fill). Masked is today's
+  workhorse; both are discrete diffusion with different corruption
+  kernels.</p>
+  <video muted loop playsinline controls preload="metadata"
+         src="media/DiffusionLM.mp4"></video>
+  <p class="caption">
+    Yellow: uniform replacement. Pink: masks. Green: real tokens.
+    <a href="DiffusionLM.html">Present as full-screen deck</a>
+    (advance with arrow keys).
   </p>
 </div>
 

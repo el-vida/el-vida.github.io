@@ -43,10 +43,14 @@
   .entry { margin: 1rem 0; }
   .entry p { margin-top: 0.2rem; }
   .when { color: var(--muted); font-size: 0.9rem; }
+  @media print {
+    body { margin: 0 auto; color: #000; background: #fff; }
+    nav, .home { display: none; }
+  }
 </style>
 </head>
 <body>
-<p><a href="./">&larr; home</a></p>
+<p class="home"><a href="./">&larr; home</a></p>
 <h1>Elija Vida</h1>
 <p class="role">PhD student, EPFL &amp; Idiap Research Institute</p>
 
@@ -80,8 +84,9 @@ generative models for speech.</p>
   <h3>Dendritic processing units</h3>
   <p>Spiking networks with dendritic branches and heterogeneous,
   RRAM-realistic delays, applied to temporal benchmarks such as the Spiking
-  Heidelberg Digits and biomedical time series. Started as my MSc thesis;
-  now continued independently toward publication.</p>
+  Heidelberg Digits and biomedical time series. Started as my MSc thesis
+  (<a href="https://github.com/EIS-Hub/DenRAM">code</a>); now continued
+  independently toward publication.</p>
 </div>
 
 <div class="entry">
@@ -98,28 +103,88 @@ generative models for speech.</p>
   <span class="when">ongoing</span>
 </div>
 <div class="entry">
-  <strong>MSc</strong>, thesis on dendritic processing units in spiking
-  neural networks
+  <strong>MSc Computer Engineering, RWTH Aachen University</strong><br>
+  <span class="when">2020 &ndash; 2024</span>
+  <p>Thesis at the Institute of Neuroinformatics, ETH Zurich, on dendritic
+  processing units in spiking neural networks. Semester abroad at UC
+  Berkeley (2022).</p>
+</div>
+<div class="entry">
+  <strong>BSc Electrical Engineering &amp; Computer Engineering, RWTH
+  Aachen University</strong><br>
+  <span class="when">2015 &ndash; 2020</span>
+  <p>TIME double-degree exchange at &Eacute;cole Centrale de Lille
+  (2017 &ndash; 2019).</p>
 </div>
 
-<!-- TODO, waiting on real facts (institutions, years, programs):
+<h2>Experience</h2>
 <div class="entry">
-  <strong>MSc, [institution]</strong><br>
-  <span class="when">[years]</span>
+  <strong>Research intern, ABB Corporate Research</strong>, Baden<br>
+  <span class="when">2025 &ndash; 2026</span>
+  <p>Machine learning for software engineering and verification.</p>
 </div>
 <div class="entry">
-  <strong>BSc, [institution]</strong><br>
-  <span class="when">[years]</span>
+  <strong>Freelance contributor, AI training &amp; evaluation</strong><br>
+  <span class="when">since 2024</span>
+  <p>Code-focused evaluation and training of large language models.</p>
+</div>
+<div class="entry">
+  <strong>Student assistant, Chair of Integrated Digital Systems, RWTH
+  Aachen</strong><br>
+  <span class="when">2023 &ndash; 2024</span>
+  <p>Software engineering for the neuroAIx FPGA-cluster framework.</p>
+</div>
+<div class="entry">
+  <strong>Intern, Porsche AG</strong>, Stuttgart<br>
+  <span class="when">2021 &ndash; 2022</span>
+  <p>Business-intelligence tooling and predictive-maintenance prototyping
+  in production.</p>
+</div>
+<div class="entry">
+  <strong>Student research assistant, E.ON Energy Research Center, RWTH
+  Aachen</strong><br>
+  <span class="when">2020 &ndash; 2021</span>
+  <p>Model predictive control for microgrid frequency stability.</p>
+</div>
+<div class="entry">
+  <strong>Student research assistant, AIT Lab, ETH Zurich</strong><br>
+  <span class="when">2020 &ndash; 2021</span>
+  <p>Statistical analysis of large-scale keystroke dynamics.</p>
+</div>
+<div class="entry">
+  <strong>Machine learning intern, CAT Telecom</strong>, Bangkok<br>
+  <span class="when">2019</span>
+  <p>Computer vision for license-plate detection on embedded hardware.</p>
 </div>
 
 <h2>Publications</h2>
-<h2>Experience</h2>
--->
+<div class="entry">
+  <a href="https://dl.acm.org/doi/10.1145/3604276">Typing Behavior is
+  About More than Speed: Users' Strategies for Choosing Word Suggestions
+  Despite Slower Typing Rates</a><br>
+  <span class="when">Proceedings of the ACM on Human-Computer Interaction,
+  2023</span>
+</div>
+<div class="entry">
+  <a href="https://ieeexplore.ieee.org/document/9827606">Centralized Model
+  Predictive Control for Transient Frequency Control in Islanded
+  Inverter-Based Microgrids</a><br>
+  <span class="when">IEEE Transactions on Power Systems, 2023</span>
+</div>
+
+<h2>Skills</h2>
+<div class="entry">
+  <p><strong>Programming:</strong> Python, C++, C, MATLAB, VHDL/Verilog
+  &middot; PyTorch, JAX, TensorFlow</p>
+  <p><strong>Languages:</strong> German (native), English (C2), French
+  (C1)</p>
+</div>
 
 <h2>Links</h2>
 <div class="entry">
   <a href="https://github.com/el-vida">GitHub</a> &middot;
-  <a href="talks/">Talk animations</a>
+  <a href="talks/">Talk animations</a> &middot;
+  <a href="demos/">Demos</a>
 </div>
 </body>
 </html>

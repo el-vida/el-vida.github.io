@@ -11,6 +11,8 @@
     --link: #1a5fb4;
     --rule: #ddd;
     --bg: #fffdf9;
+    --panel: #ffffff;
+    --panel-border: #e4e0d6;
   }
   @media (prefers-color-scheme: dark) {
     :root {
@@ -19,6 +21,8 @@
       --link: #7cb0e8;
       --rule: #333;
       --bg: #16181d;
+      --panel: #1d212a;
+      --panel-border: #2a2f3a;
     }
   }
   body {
@@ -34,18 +38,32 @@
   h1 { margin-bottom: 0.1rem; }
   h2 {
     font-size: 1.15rem;
-    margin-top: 2.2rem;
+    margin-top: 2.4rem;
     padding-bottom: 0.3rem;
     border-bottom: 1px solid var(--rule);
   }
-  h3 { font-size: 1rem; margin-bottom: 0.2rem; }
+  h3 { font-size: 1rem; margin: 0; }
   .role { color: var(--muted); margin-top: 0; }
-  .entry { margin: 1rem 0; }
-  .entry p { margin-top: 0.2rem; }
-  .when { color: var(--muted); font-size: 0.9rem; }
+  .entry {
+    margin: 0.9rem 0;
+    padding: 0.85rem 1.1rem;
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: 8px;
+  }
+  .entry p { margin: 0.35rem 0 0; }
+  .head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0.4rem 1rem;
+    flex-wrap: wrap;
+  }
+  .when { color: var(--muted); font-size: 0.9rem; white-space: nowrap; }
   @media print {
     body { margin: 0 auto; color: #000; background: #fff; }
-    nav, .home { display: none; }
+    .home { display: none; }
+    .entry { border-color: #ccc; background: #fff; padding: 0.4rem 0.7rem; }
   }
 </style>
 </head>
@@ -98,93 +116,115 @@ generative models for speech.</p>
 
 <h2>Education</h2>
 <div class="entry">
-  <strong>PhD, EPFL</strong>, hosted at the Idiap Research Institute,
-  Martigny<br>
-  <span class="when">ongoing</span>
+  <div class="head">
+    <h3>PhD, EPFL</h3>
+    <span class="when">ongoing</span>
+  </div>
+  <p>Hosted at the Idiap Research Institute, Martigny.</p>
 </div>
 <div class="entry">
-  <strong>MSc Computer Engineering, RWTH Aachen University</strong><br>
-  <span class="when">2020 &ndash; 2024</span>
+  <div class="head">
+    <h3>MSc Computer Engineering, RWTH Aachen University</h3>
+    <span class="when">2020 &ndash; 2024</span>
+  </div>
   <p>Thesis at the Institute of Neuroinformatics, ETH Zurich, on dendritic
   processing units in spiking neural networks. Semester abroad at UC
   Berkeley (2022).</p>
 </div>
 <div class="entry">
-  <strong>BSc Electrical Engineering &amp; Computer Engineering, RWTH
-  Aachen University</strong><br>
-  <span class="when">2015 &ndash; 2020</span>
+  <div class="head">
+    <h3>BSc Electrical Engineering &amp; Computer Engineering, RWTH Aachen
+    University</h3>
+    <span class="when">2015 &ndash; 2020</span>
+  </div>
   <p>TIME double-degree exchange at &Eacute;cole Centrale de Lille
   (2017 &ndash; 2019).</p>
 </div>
 
 <h2>Experience</h2>
 <div class="entry">
-  <strong>Research intern, ABB Corporate Research</strong>, Baden<br>
-  <span class="when">2025 &ndash; 2026</span>
+  <div class="head">
+    <h3>Research intern, ABB Corporate Research, Baden</h3>
+    <span class="when">2025 &ndash; 2026</span>
+  </div>
   <p>Machine learning for software engineering and verification.</p>
 </div>
 <div class="entry">
-  <strong>Freelance contributor, AI training &amp; evaluation</strong><br>
-  <span class="when">since 2024</span>
+  <div class="head">
+    <h3>Freelance contributor, AI training &amp; evaluation</h3>
+    <span class="when">since 2024</span>
+  </div>
   <p>Code-focused evaluation and training of large language models.</p>
 </div>
 <div class="entry">
-  <strong>Student assistant, Chair of Integrated Digital Systems, RWTH
-  Aachen</strong><br>
-  <span class="when">2023 &ndash; 2024</span>
+  <div class="head">
+    <h3>Student assistant, Chair of Integrated Digital Systems, RWTH
+    Aachen</h3>
+    <span class="when">2023 &ndash; 2024</span>
+  </div>
   <p>Software engineering for the neuroAIx FPGA-cluster framework.</p>
 </div>
 <div class="entry">
-  <strong>Intern, Porsche AG</strong>, Stuttgart<br>
-  <span class="when">2021 &ndash; 2022</span>
+  <div class="head">
+    <h3>Intern, Porsche AG, Stuttgart</h3>
+    <span class="when">2021 &ndash; 2022</span>
+  </div>
   <p>Business-intelligence tooling and predictive-maintenance prototyping
   in production.</p>
 </div>
 <div class="entry">
-  <strong>Student research assistant, E.ON Energy Research Center, RWTH
-  Aachen</strong><br>
-  <span class="when">2020 &ndash; 2021</span>
+  <div class="head">
+    <h3>Student research assistant, E.ON Energy Research Center, RWTH
+    Aachen</h3>
+    <span class="when">2020 &ndash; 2021</span>
+  </div>
   <p>Model predictive control for microgrid frequency stability.</p>
 </div>
 <div class="entry">
-  <strong>Student research assistant, AIT Lab, ETH Zurich</strong><br>
-  <span class="when">2020 &ndash; 2021</span>
+  <div class="head">
+    <h3>Student research assistant, AIT Lab, ETH Zurich</h3>
+    <span class="when">2020 &ndash; 2021</span>
+  </div>
   <p>Statistical analysis of large-scale keystroke dynamics.</p>
 </div>
 <div class="entry">
-  <strong>Machine learning intern, CAT Telecom</strong>, Bangkok<br>
-  <span class="when">2019</span>
+  <div class="head">
+    <h3>Machine learning intern, CAT Telecom, Bangkok</h3>
+    <span class="when">2019</span>
+  </div>
   <p>Computer vision for license-plate detection on embedded hardware.</p>
 </div>
 
 <h2>Publications</h2>
 <div class="entry">
-  <a href="https://dl.acm.org/doi/10.1145/3604276">Typing Behavior is
-  About More than Speed: Users' Strategies for Choosing Word Suggestions
-  Despite Slower Typing Rates</a><br>
-  <span class="when">Proceedings of the ACM on Human-Computer Interaction,
-  2023</span>
+  <div class="head">
+    <h3><a href="https://dl.acm.org/doi/10.1145/3604276">Typing Behavior
+    is About More than Speed: Users' Strategies for Choosing Word
+    Suggestions Despite Slower Typing Rates</a></h3>
+  </div>
+  <p class="when">Proceedings of the ACM on Human-Computer Interaction,
+  2023</p>
 </div>
 <div class="entry">
-  <a href="https://ieeexplore.ieee.org/document/9827606">Centralized Model
-  Predictive Control for Transient Frequency Control in Islanded
-  Inverter-Based Microgrids</a><br>
-  <span class="when">IEEE Transactions on Power Systems, 2023</span>
+  <div class="head">
+    <h3><a href="https://ieeexplore.ieee.org/document/9827606">Centralized
+    Model Predictive Control for Transient Frequency Control in Islanded
+    Inverter-Based Microgrids</a></h3>
+  </div>
+  <p class="when">IEEE Transactions on Power Systems, 2023</p>
 </div>
 
 <h2>Skills</h2>
 <div class="entry">
-  <p><strong>Programming:</strong> Python, C++, C, MATLAB, VHDL/Verilog
-  &middot; PyTorch, JAX, TensorFlow</p>
+  <p style="margin-top:0"><strong>Programming:</strong> Python, C++, C,
+  MATLAB, VHDL/Verilog &middot; PyTorch, JAX, TensorFlow</p>
   <p><strong>Languages:</strong> German (native), English (C2), French
   (C1)</p>
 </div>
 
 <h2>Links</h2>
-<div class="entry">
-  <a href="https://github.com/el-vida">GitHub</a> &middot;
-  <a href="talks/">Talk animations</a> &middot;
-  <a href="demos/">Demos</a>
-</div>
+<p><a href="https://github.com/el-vida">GitHub</a> &middot;
+<a href="talks/">Talk animations</a> &middot;
+<a href="demos/">Demos</a></p>
 </body>
 </html>

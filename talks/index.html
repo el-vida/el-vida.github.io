@@ -310,22 +310,31 @@ topic to open it; each animation also exists as a slide deck for presenting
 </div>
 
 <div class="anim">
-  <h2>DDPM on MNIST</h2>
-  <p>The two halves of a denoising diffusion model, on real MNIST digits.
-  The forward process corrupts a digit with Gaussian noise step by step;
-  every frame is an exact sample of the closed-form marginal
-  q(x&#8202;<sub>t</sub>&#8202;|&#8202;x&#8202;<sub>0</sub>) under a linear
-  schedule with T&nbsp;=&nbsp;1000. The reverse pass then plays three
-  trajectories backwards, three noise samples resolving into three
-  different digits, as an illustration of the learned denoiser
-  p<sub>&theta;</sub> (no trained model in the loop).</p>
+  <h2>DDPM on MNIST and spoken digits</h2>
+  <p>The two halves of a denoising diffusion model, on real data twice
+  over. First on MNIST: the forward process corrupts a digit with Gaussian
+  noise step by step, every frame an exact sample of the closed-form
+  marginal q(x&#8202;<sub>t</sub>&#8202;|&#8202;x&#8202;<sub>0</sub>) under
+  a linear schedule with T&nbsp;=&nbsp;1000, and the reverse pass plays
+  three trajectories backwards, three noise samples resolving into three
+  different digits. Then the same recipe on speech: a 64&times;64 log-mel
+  patch of a real spoken digit (Heidelberg Digits) dissolves into noise
+  and re-emerges, which is exactly the setting of the
+  <a href="../demos/spiking-digit-jukebox/">Spiking Digit Jukebox</a>
+  demo, where a class-conditional diffusion model trained on such patches
+  generates new spoken digits you can listen to. Reverse passes here are
+  illustrations (forward played backwards, no trained model in the loop);
+  the jukebox plays the real thing.</p>
   <video muted loop playsinline controls preload="metadata"
          src="media/DDPMMnist.mp4"></video>
   <p class="caption">
-    Forward: exact DDPM marginals on a real digit. Reverse: the same
-    trajectories reversed, labeled as illustration.
+    Forward: exact DDPM marginals on real MNIST digits and a real HD
+    spectrogram. Reverse: the same trajectories reversed, labeled as
+    illustration.
     <a href="DDPMMnist.html">Present as full-screen deck</a>
-    (advance with arrow keys).
+    (advance with arrow keys) &middot;
+    <a href="../demos/spiking-digit-jukebox/">listen: Spiking Digit
+    Jukebox</a>.
   </p>
 </div>
 

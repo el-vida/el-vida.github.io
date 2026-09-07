@@ -158,7 +158,30 @@ topic to open it; each animation also exists as a slide deck for presenting
 </details>
 
 <details class="topic">
-<summary><h2>Speech recognition</h2><span class="count">2 animations</span></summary>
+<summary><h2>Speech recognition</h2><span class="count">3 animations</span></summary>
+
+<div class="anim">
+  <h2>The Conformer, step by step</h2>
+  <p>The standard speech encoder since Gulati et al. (2020), built up on
+  real TIMIT features. Convolutional subsampling shrinks time by four, then
+  a stack of "macaron" blocks: two half-step feed-forward shells around a
+  self-attention and a convolution filling. Attention is shown as arcs from
+  a query frame to every other frame, with strengths computed from the
+  actual content similarity of the real frames (an illustration, not a
+  trained model): nearby frames and acoustically similar distant frames
+  light up. The convolution module slides a 31-frame window (about 1.2
+  seconds) with its internal chain: pointwise, GLU, depthwise, BatchNorm,
+  Swish, pointwise. The finale puts the two connectivity matrices side by
+  side: attention reaches all pairs, convolution a band, and the block
+  gives every frame both views.</p>
+  <video muted loop playsinline controls preload="metadata"
+         src="media/ConformerArch.mp4"></video>
+  <p class="caption">
+    Blue: feed-forward. Yellow: attention. Green: convolution.
+    <a href="ConformerArch.html">Present as full-screen deck</a>
+    (advance with arrow keys).
+  </p>
+</div>
 
 <div class="anim">
   <h2>The ASR pipeline</h2>

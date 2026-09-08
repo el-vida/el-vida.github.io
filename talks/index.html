@@ -158,7 +158,7 @@ topic to open it; each animation also exists as a slide deck for presenting
 </details>
 
 <details class="topic">
-<summary><h2>Speech recognition</h2><span class="count">3 animations</span></summary>
+<summary><h2>Speech recognition</h2><span class="count">5 animations</span></summary>
 
 <div class="anim">
   <h2>The Conformer, step by step</h2>
@@ -202,6 +202,30 @@ topic to open it; each animation also exists as a slide deck for presenting
 </div>
 
 <div class="anim">
+  <h2>Convolution as feature extraction</h2>
+  <p>Why CNNs are the standard audio front end, on real TIMIT audio. A
+  15-tap kernel slides along the waveform while its response builds below:
+  convolution is one small dot product repeated at every position,
+  y[n] = &Sigma; w[k] x[n+k]. Two hand-set kernels (a moving average and a
+  150&nbsp;Hz band-pass) pull different structure out of the same signal:
+  a conv layer is a filterbank, and a trained one learns its own band-passes
+  (SincNet). The same idea in 2D turns the log-mel spectrogram into a
+  temporal-edge map where onsets light up, an exact Sobel convolution of
+  the real spectrogram. Stacking grows the receptive field as
+  r = 1 + L(k-1), and with stride the span compounds: four blocks see about
+  0.3&nbsp;s of speech. The closing count: a dense map between two such
+  grids costs 138M weights, 64 shared 3&times;3 kernels cost 576.</p>
+  <video muted loop playsinline controls preload="metadata"
+         src="media/CnnFeatures.mp4"></video>
+  <p class="caption">
+    Orange: real waveform. Blue and purple: exact filter responses.
+    Green: the 2D edge map. Kernels are hand-set and labeled as such.
+    <a href="CnnFeatures.html">Present as full-screen deck</a>
+    (advance with arrow keys).
+  </p>
+</div>
+
+<div class="anim">
   <h2>CTC on the word "see"</h2>
   <p>How CTC turns per-frame predictions into a transcript without knowing
   the alignment. One alignment of ten frames collapses by the two rules
@@ -220,10 +244,35 @@ topic to open it; each animation also exists as a slide deck for presenting
   </p>
 </div>
 
+<div class="anim">
+  <h2>LSTM gating and long contexts</h2>
+  <p>Why plain recurrence forgets and gates remember. Gradients through an
+  RNN are products of step-to-step Jacobians, and on a log axis powers are
+  straight lines: 0.9<sup>60</sup> = 0.002 dies, 1.1<sup>60</sup> = 304
+  explodes, and only slopes near zero survive. The LSTM gives memory its
+  own highway, c<sub>t</sub> = f<sub>t</sub>&middot;c<sub>t-1</sub> +
+  i<sub>t</sub>&middot;(new content), and the whole fix sits in one
+  derivative: dc<sub>t</sub>/dc<sub>t-1</sub> = f<sub>t</sub>, a number
+  the network sets at every step from the data rather than a fixed weight,
+  so f = 0.99 still delivers 0.55 of the gradient after 60 steps (the
+  constant error carousel). A store/hold/erase demo with hand-set gates,
+  labeled as such, writes a token, holds it flat for 40 steps, and erases
+  it on command. The spiking connection: an LIF membrane is the fixed-leak
+  special case f = &alpha; = e<sup>-&Delta;t/&tau;</sup>.</p>
+  <video muted loop playsinline controls preload="metadata"
+         src="media/LstmGating.mp4"></video>
+  <p class="caption">
+    Orange: the fading plain RNN. Purple: the gated cell state. All decay
+    curves are the actual powers.
+    <a href="LstmGating.html">Present as full-screen deck</a>
+    (advance with arrow keys).
+  </p>
+</div>
+
 </details>
 
 <details class="topic">
-<summary><h2>Generative models and inference</h2><span class="count">8 animations</span></summary>
+<summary><h2>Generative models and inference</h2><span class="count">9 animations</span></summary>
 
 <div class="anim">
   <h2>What "intractable" means</h2>
@@ -335,6 +384,34 @@ topic to open it; each animation also exists as a slide deck for presenting
     (advance with arrow keys) &middot;
     <a href="../demos/spiking-digit-jukebox/">listen: Spiking Digit
     Jukebox</a>.
+  </p>
+</div>
+
+<div class="anim">
+  <h2>DDPM vs DDIM: one model, two samplers</h2>
+  <p>After training, a diffusion model is one function, the noise
+  predictor; sampling is how you use it. On the same two-Gaussian toy as
+  the flow-matching scene the score is closed form, so both samplers run
+  with the exact optimal predictor and every path is a true simulation.
+  DDPM redraws fresh noise at each of 400 steps: from one fixed starting
+  point, three runs land in two different modes, and the true odds from
+  that exact start are 38:62 (computable in closed form). DDIM deletes the
+  noise term, nothing is retrained, and the same start now follows a
+  single smooth path of length 1.05 where the stochastic walk wandered
+  47.5. Deterministic paths can be leapt along: 10 steps land within 0.08
+  on average of the 400-step answer. And the start becomes a code: a small
+  disc of starts maps under DDIM to a tighter disc (0.30 across going in,
+  0.14 coming out) while DDPM scatters the same disc 4 vs 10 across both
+  modes. A knob &eta; blends the two samplers; &eta; = 0 traces the
+  probability-flow ODE, the bridge to flow matching.</p>
+  <video muted loop playsinline controls preload="metadata"
+         src="media/DdpmVsDdim.mp4"></video>
+  <p class="caption">
+    Blue: DDPM walks. Purple: the DDIM path. Yellow: the 10-step leaps.
+    The few-step failure of stochastic sampling with a learned network is
+    stated as a cited claim, not simulated.
+    <a href="DdpmVsDdim.html">Present as full-screen deck</a>
+    (advance with arrow keys).
   </p>
 </div>
 

@@ -13,7 +13,39 @@
     --lime: #ffb000;
     --panel: rgba(7, 14, 9, 0.95);
     --border: #1c3a22;
+    --scan: rgba(0, 0, 0, 0.22);
+    --vig: rgba(0, 0, 0, 0.5);
+    --glow: rgba(51, 255, 102, 0.3);
+    --fmglow: rgba(255, 176, 0, 0.35);
     --mono: "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) {
+      --bg: #f4f0e4;
+      --fg: #2a4a33;
+      --muted: #6d8a74;
+      --cyan: #0c7a35;
+      --lime: #b3781f;
+      --panel: rgba(253, 251, 242, 0.95);
+      --border: #cfc9b0;
+      --scan: rgba(0, 0, 0, 0.05);
+      --vig: rgba(0, 0, 0, 0.1);
+      --glow: rgba(12, 122, 53, 0.15);
+      --fmglow: rgba(179, 120, 31, 0.3);
+    }
+  }
+  :root[data-theme="light"] {
+    --bg: #f4f0e4;
+    --fg: #2a4a33;
+    --muted: #6d8a74;
+    --cyan: #0c7a35;
+    --lime: #b3781f;
+    --panel: rgba(253, 251, 242, 0.95);
+    --border: #cfc9b0;
+    --scan: rgba(0, 0, 0, 0.05);
+    --vig: rgba(0, 0, 0, 0.1);
+    --glow: rgba(12, 122, 53, 0.15);
+    --fmglow: rgba(179, 120, 31, 0.3);
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html { scroll-behavior: smooth; }
@@ -21,18 +53,26 @@
     background: var(--bg); color: var(--fg);
     font-family: var(--mono);
     line-height: 1.65; overflow-x: hidden;
+    transition: background 0.4s, color 0.4s;
   }
   a { color: var(--cyan); text-decoration: none; }
   ::selection { background: var(--lime); color: #000; }
   body::before {
     content: ""; position: fixed; inset: 0; z-index: 40; pointer-events: none;
-    background: repeating-linear-gradient(0deg, rgba(0,0,0,0.22) 0 1px, transparent 1px 3px);
+    background: repeating-linear-gradient(0deg, var(--scan) 0 1px, transparent 1px 3px);
   }
   body::after {
     content: ""; position: fixed; inset: 0; z-index: 41; pointer-events: none;
-    background: radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,0.5) 100%);
+    background: radial-gradient(ellipse at center, transparent 55%, var(--vig) 100%);
   }
-  h1, h2 { text-shadow: 0 0 16px rgba(51, 255, 102, 0.3); }
+  h1, h2 { text-shadow: 0 0 16px var(--glow); }
+  #themebtn {
+    position: fixed; top: 1.1rem; right: 1.2rem; z-index: 60; cursor: pointer;
+    font-family: var(--mono); font-size: 0.9rem; padding: 0.4rem 0.65rem;
+    border: 1px solid var(--border); background: var(--panel); color: var(--fg);
+    transition: border-color 0.3s, color 0.3s;
+  }
+  #themebtn:hover { border-color: var(--cyan); color: var(--cyan); }
   .lastlogin { font-family: var(--mono); color: var(--muted); font-size: 0.8rem; margin-bottom: 0.6rem; }
   a:hover { text-decoration: underline; }
   canvas#net { position: fixed; inset: 0; z-index: 0; }
@@ -53,8 +93,8 @@
     font-family: var(--mono); font-size: 0.75rem; color: var(--muted); }
 
   #fm { position: fixed; right: 1.2rem; bottom: 1.1rem; z-index: 2; pointer-events: none;
-    font-family: var(--mono); font-size: 0.78rem; color: #ffb000; opacity: 0;
-    text-shadow: 0 0 12px rgba(255, 176, 0, 0.35); transition: opacity 0.4s; }
+    font-family: var(--mono); font-size: 0.78rem; color: var(--lime); opacity: 0;
+    text-shadow: 0 0 12px var(--fmglow); transition: opacity 0.4s; }
 
   section { padding: 4.5rem 0 0.5rem; }
   h2 { font-family: var(--mono); font-size: 1rem; color: var(--lime); margin-bottom: 1.4rem; font-weight: 400; }
@@ -91,6 +131,7 @@
 </head>
 <body>
 <canvas id="net" aria-hidden="true"></canvas>
+<button id="themebtn" aria-label="Toggle color scheme">[◐]</button>
 <div id="fm" aria-hidden="true">x&#8348; = (1&#8722;t)&#183;x&#8320; + t&#183;x&#8321; &nbsp;// flow matching &#8594; &#129504;</div>
 
 <div class="wrap">
@@ -172,6 +213,30 @@
 
 <script>
 (() => {
+  // theme: system by default, toggle overrides; canvas palette follows
+  const root = document.documentElement;
+  try {
+    const saved = localStorage.getItem('theme');
+    if (saved === 'dark' || saved === 'light') root.dataset.theme = saved;
+  } catch (e) {}
+  function isLight() {
+    const t = root.dataset.theme;
+    return t === 'light' || (!t && matchMedia('(prefers-color-scheme: light)').matches);
+  }
+  let PAL;
+  function setPal() {
+    PAL = isLight()
+      ? { edge: 'rgba(20, 120, 60, ', node: 'rgba(10, 105, 45, ', spike: 'rgba(179, 120, 31, 0.9)', streak: 'rgba(179, 120, 31, 0.28)', part: 'rgba(160, 105, 25, ' }
+      : { edge: 'rgba(70, 210, 100, ', node: 'rgba(110, 255, 140, ', spike: 'rgba(255, 176, 0, 0.9)', streak: 'rgba(255, 176, 0, 0.22)', part: 'rgba(255, 200, 80, ' };
+  }
+  setPal();
+  matchMedia('(prefers-color-scheme: light)').addEventListener('change', setPal);
+  document.getElementById('themebtn').addEventListener('click', () => {
+    root.dataset.theme = isLight() ? 'dark' : 'light';
+    try { localStorage.setItem('theme', root.dataset.theme); } catch (e) {}
+    setPal();
+  });
+
   const cv = document.getElementById('net'), ctx = cv.getContext('2d');
   const noMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const DPR = devicePixelRatio || 1;
@@ -316,20 +381,20 @@
       if (streak > 0.1) {
         const dxs = (p.tx - p.x0), dys = (p.ty - p.y0);
         const len = Math.hypot(dxs, dys) || 1;
-        ctx.strokeStyle = 'rgba(255, 176, 0, 0.22)';
+        ctx.strokeStyle = PAL.streak;
         ctx.lineWidth = DPR * 0.8;
         ctx.beginPath(); ctx.moveTo(px, py);
         ctx.lineTo(px - dxs / len * streak * 9 * DPR, py - dys / len * streak * 9 * DPR);
         ctx.stroke();
       }
-      ctx.fillStyle = `rgba(255, 200, 80, ${0.22 + 0.4 * morph})`;
+      ctx.fillStyle = PAL.part + (0.22 + 0.4 * morph) + ')';
       ctx.beginPath(); ctx.arc(px, py, (1 + 0.6 * morph) * DPR, 0, 7); ctx.fill();
     });
 
     ctx.lineWidth = DPR * 0.6;
     edges.forEach(e => {
       const a = nodes[e.a], b = nodes[e.b];
-      ctx.strokeStyle = `rgba(70, 210, 100, ${(0.13 + 0.07 * morph) * (1 - e.d / e.L)})`;
+      ctx.strokeStyle = PAL.edge + ((0.13 + 0.07 * morph) * (1 - e.d / e.L)) + ')';
       ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
     });
     spikes = spikes.filter(s => s.t <= 1 && s.e.a < nVis && s.e.b < nVis);
@@ -337,7 +402,7 @@
       s.t += s.speed;
       const A = nodes[s.from === 'a' ? s.e.a : s.e.b], B = nodes[s.from === 'a' ? s.e.b : s.e.a];
       const x = A.x + (B.x - A.x) * s.t, y = A.y + (B.y - A.y) * s.t;
-      ctx.fillStyle = 'rgba(255, 176, 0, 0.9)';
+      ctx.fillStyle = PAL.spike;
       ctx.beginPath(); ctx.arc(x, y, 2.2 * DPR, 0, 7); ctx.fill();
       if (s.t >= 1 && Math.random() < 0.35) {
         const target = s.from === 'a' ? s.e.b : s.e.a;
@@ -346,7 +411,7 @@
     });
     for (let i = 0; i < nVis; i++) {
       const n = nodes[i];
-      ctx.fillStyle = `rgba(110, 255, 140, ${0.35 + n.glow * 0.65})`;
+      ctx.fillStyle = PAL.node + (0.35 + n.glow * 0.65) + ')';
       ctx.beginPath(); ctx.arc(n.x, n.y, (1.4 + n.glow * 2.6) * DPR, 0, 7); ctx.fill();
     }
     requestAnimationFrame(step);

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Elija Vida — Editorial</title>
+<style>
+  :root {
+    --bg: #faf6ef;
+    --ink: #17140e;
+    --muted: #6f6a5e;
+    --rule: #e2dccd;
+    --accent: #b4531f;
+    --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg); color: var(--ink);
+    font-family: var(--serif); line-height: 1.6; overflow-x: hidden;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* film grain */
+  body::after {
+    content: ""; position: fixed; inset: 0; z-index: 50; pointer-events: none; opacity: 0.05;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .wrap { max-width: 68rem; margin: 0 auto; padding: 0 1.6rem; }
+
+  /* hero */
+  .hero { min-height: 96vh; display: flex; flex-direction: column; justify-content: center; }
+  .kicker { font-size: 0.85rem; letter-spacing: 0.28em; text-transform: uppercase; color: var(--muted); margin-bottom: 1.6rem; }
+  .hero h1 {
+    font-size: clamp(3.4rem, 12vw, 9rem); font-weight: 500; line-height: 0.98; letter-spacing: -0.03em;
+  }
+  .hero h1 .w { display: inline-block; overflow: hidden; vertical-align: bottom; }
+  .hero h1 .w i { display: inline-block; font-style: normal; transform: translateY(110%); animation: rise 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) forwards; }
+  .hero h1 .w:nth-child(2) i { animation-delay: 0.12s; }
+  @keyframes rise { to { transform: none; } }
+  .hero .lede { max-width: 32rem; font-size: 1.15rem; color: var(--muted); margin-top: 2.2rem; }
+  .hero .lede em { color: var(--ink); font-style: italic; }
+
+  .chapter-index { margin-top: 3rem; display: flex; gap: 2.2rem; flex-wrap: wrap; font-size: 0.9rem; }
+  .chapter-index a { color: var(--ink); }
+  .chapter-index a span { color: var(--muted); margin-right: 0.4rem; font-variant-numeric: tabular-nums; }
+
+  /* marquee */
+  .marquee { border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule);
+    overflow: hidden; white-space: nowrap; padding: 0.85rem 0; margin: 3rem 0; }
+  .marquee div { display: inline-block; animation: slide 28s linear infinite; }
+  .marquee span { font-size: 0.9rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--muted); margin-right: 3rem; }
+  @keyframes slide { to { transform: translateX(-50%); } }
+
+  section.chapter { padding: 5rem 0 2rem; }
+  .ch-head { display: flex; align-items: baseline; gap: 1.2rem; border-bottom: 1px solid var(--ink); padding-bottom: 0.7rem; margin-bottom: 2rem; }
+  .ch-head .no { font-size: 0.95rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .ch-head h2 { font-size: clamp(1.8rem, 4.5vw, 3rem); font-weight: 500; letter-spacing: -0.02em; }
+
+  .prose { max-width: 38rem; font-size: 1.1rem; }
+
+  /* horizontal experience rail */
+  .rail-hint { font-size: 0.8rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-bottom: 1rem; }
+  .rail { display: flex; gap: 1.2rem; overflow-x: auto; padding-bottom: 1.2rem; scroll-snap-type: x proximity; cursor: grab; }
+  .rail::-webkit-scrollbar { height: 6px; }
+  .rail::-webkit-scrollbar-thumb { background: var(--rule); border-radius: 3px; }
+  .rail article {
+    flex: 0 0 20rem; scroll-snap-align: start;
+    border: 1px solid var(--rule); background: #fffdf8;
+    padding: 1.4rem 1.5rem; border-radius: 2px;
+    transition: transform 0.3s, border-color 0.3s;
+  }
+  .rail article:hover { transform: translateY(-5px); border-color: var(--ink); }
+  .rail .when { font-size: 0.8rem; letter-spacing: 0.14em; color: var(--accent); }
+  .rail h3 { font-size: 1.15rem; font-weight: 500; margin: 0.4rem 0 0.2rem; }
+  .rail .org { color: var(--muted); font-size: 0.95rem; }
+  .rail p { color: var(--muted); font-size: 0.92rem; margin-top: 0.5rem; }
+
+  /* stacked lists */
+  .row { display: grid; grid-template-columns: 9rem 1fr; gap: 1.6rem; padding: 1.15rem 0; border-bottom: 1px solid var(--rule); }
+  .row .when { color: var(--muted); font-size: 0.9rem; font-variant-numeric: tabular-nums; }
+  .row h3 { font-size: 1.15rem; font-weight: 500; }
+  .row p { color: var(--muted); font-size: 0.97rem; margin-top: 0.2rem; }
+  @media (max-width: 560px) { .row { grid-template-columns: 1fr; gap: 0.2rem; } }
+
+  .biglink { display: block; font-size: clamp(1.5rem, 4vw, 2.4rem); padding: 1rem 0;
+    border-bottom: 1px solid var(--rule); color: var(--ink); font-weight: 500; letter-spacing: -0.01em;
+    transition: padding-left 0.35s, color 0.35s; }
+  .biglink:hover { padding-left: 1.4rem; color: var(--accent); text-decoration: none; }
+  .biglink small { display: block; font-size: 0.85rem; color: var(--muted); letter-spacing: 0.05em; font-weight: 400; }
+
+  footer { padding: 5rem 0 3rem; color: var(--muted); font-size: 0.9rem; }
+
+  .rv { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease, transform 0.8s ease; }
+  .rv.in { opacity: 1; transform: none; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .rv { opacity: 1; transform: none; transition: none; }
+    .marquee div { animation: none; }
+    .hero h1 .w i { transform: none; animation: none; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <p class="kicker">Curriculum Vitae — 2026</p>
+    <h1><span class="w"><i>Elija&nbsp;</i></span><span class="w"><i>Vida</i></span></h1>
+    <p class="lede">PhD student at EPFL &amp; the Idiap Research Institute, working on
+    <em>spiking neural networks</em> for sequence processing — speech recognition,
+    noise as a resource for learning, dendritic computation, and spiking generative models.</p>
+    <nav class="chapter-index">
+      <a href="#research"><span>01</span>Research</a>
+      <a href="#projects"><span>02</span>Projects</a>
+      <a href="#experience"><span>03</span>Experience</a>
+      <a href="#education"><span>04</span>Education</a>
+      <a href="#publications"><span>05</span>Publications</a>
+      <a href="#skills"><span>06</span>Skills</a>
+      <a href="#links"><span>07</span>Links</a>
+    </nav>
+  </header>
+</div>
+
+<div class="marquee" aria-hidden="true"><div>
+  <span>Spiking Neural Networks</span><span>Speech Recognition</span><span>Dendritic Computation</span>
+  <span>Neuromorphic Hardware</span><span>Generative Models</span><span>PyTorch</span><span>JAX</span>
+  <span>Spiking Neural Networks</span><span>Speech Recognition</span><span>Dendritic Computation</span>
+  <span>Neuromorphic Hardware</span><span>Generative Models</span><span>PyTorch</span><span>JAX</span>
+</div></div>
+
+<div class="wrap">
+  <section class="chapter" id="research">
+    <div class="ch-head rv"><span class="no">01</span><h2>Research</h2></div>
+    <p class="prose rv">I work on spiking neural networks for sequence processing. This includes
+    speech recognition on LibriSpeech and TIMIT with spiking architectures, the role of noise
+    in spiking neuron models, dendritic computation, and spiking generative models for speech.</p>
+  </section>
+
+  <section class="chapter" id="projects">
+    <div class="ch-head rv"><span class="no">02</span><h2>Projects</h2></div>
+    <div class="row rv"><span class="when">ongoing</span><div><h3>Spiking speech recognition</h3>
+      <p>End-to-end recognition with spiking encoders in SpeechBrain, on TIMIT and LibriSpeech — hybrid spiking/non-spiking recurrent architectures evaluated against published baselines.</p></div></div>
+    <div class="row rv"><span class="when">ongoing</span><div><h3>Noise as a resource in spiking neurons</h3>
+      <p>Noisy neuron models with the noise-driven learning rule, trainable noise scales, and noise schedules on speech-command benchmarks.</p></div></div>
+    <div class="row rv"><span class="when">since MSc</span><div><h3>Dendritic processing units</h3>
+      <p>Dendritic branches with RRAM-realistic delays on temporal benchmarks (<a href="https://github.com/EIS-Hub/DenRAM" target="_blank" rel="noopener">code</a>); continued toward publication.</p></div></div>
+    <div class="row rv"><span class="when">early stage</span><div><h3>Spiking generative models</h3>
+      <p>Diffusion and flow matching as a route to spiking speech synthesis — the topic of my PhD candidacy project.</p></div></div>
+  </section>
+
+  <section class="chapter" id="experience">
+    <div class="ch-head rv"><span class="no">03</span><h2>Experience</h2></div>
+    <p class="rail-hint rv">Drag or scroll sideways →</p>
+    <div class="rail rv" id="rail">
+      <article><span class="when">2025 – 2026</span><h3>Research Intern</h3>
+        <div class="org">ABB Corporate Research, Baden</div>
+        <p>Machine learning for software engineering and verification.</p></article>
+      <article><span class="when">since 2024</span><h3>Freelance Contributor</h3>
+        <div class="org">AI training &amp; evaluation</div>
+        <p>Code-focused evaluation and training of large language models.</p></article>
+      <article><span class="when">2023 – 2024</span><h3>Student Assistant</h3>
+        <div class="org">Integrated Digital Systems, RWTH Aachen</div>
+        <p>Software engineering for the neuroAIx FPGA-cluster framework.</p></article>
+      <article><span class="when">2021 – 2022</span><h3>Intern</h3>
+        <div class="org">Porsche AG, Stuttgart</div>
+        <p>Business-intelligence tooling and predictive-maintenance prototyping.</p></article>
+      <article><span class="when">2020 – 2021</span><h3>Research Assistant</h3>
+        <div class="org">E.ON Energy Research Center, RWTH Aachen</div>
+        <p>Model predictive control for microgrid frequency stability.</p></article>
+      <article><span class="when">2020 – 2021</span><h3>Research Assistant</h3>
+        <div class="org">AIT Lab, ETH Zurich</div>
+        <p>Statistical analysis of large-scale keystroke dynamics.</p></article>
+      <article><span class="when">2019</span><h3>ML Intern</h3>
+        <div class="org">CAT Telecom, Bangkok</div>
+        <p>Computer vision for license-plate detection on embedded hardware.</p></article>
+    </div>
+  </section>
+
+  <section class="chapter" id="education">
+    <div class="ch-head rv"><span class="no">04</span><h2>Education</h2></div>
+    <div class="row rv"><span class="when">ongoing</span><div><h3>PhD, EPFL</h3>
+      <p>Hosted at the Idiap Research Institute, Martigny.</p></div></div>
+    <div class="row rv"><span class="when">2020 – 2024</span><div><h3>MSc Computer Engineering, RWTH Aachen University</h3>
+      <p>Thesis at the Institute of Neuroinformatics, ETH Zurich. Semester abroad at UC Berkeley (2022).</p></div></div>
+    <div class="row rv"><span class="when">2015 – 2020</span><div><h3>BSc Electrical &amp; Computer Engineering, RWTH Aachen University</h3>
+      <p>TIME double-degree exchange at École Centrale de Lille (2017 – 2019).</p></div></div>
+  </section>
+
+  <section class="chapter" id="publications">
+    <div class="ch-head rv"><span class="no">05</span><h2>Publications</h2></div>
+    <a class="biglink rv" href="https://dl.acm.org/doi/10.1145/3604276" target="_blank" rel="noopener">
+      Typing Behavior is About More than Speed
+      <small>Proc. ACM Human-Computer Interaction, 2023</small></a>
+    <a class="biglink rv" href="https://ieeexplore.ieee.org/document/9827606" target="_blank" rel="noopener">
+      Centralized MPC for Transient Frequency Control
+      <small>IEEE Transactions on Power Systems, 2023</small></a>
+  </section>
+
+  <section class="chapter" id="skills">
+    <div class="ch-head rv"><span class="no">06</span><h2>Skills</h2></div>
+    <div class="row rv"><span class="when">Programming</span><div>
+      <p>Python, C++, C, MATLAB, VHDL/Verilog &middot; PyTorch, JAX, TensorFlow</p></div></div>
+    <div class="row rv"><span class="when">Languages</span><div>
+      <p>German (native), English (C2), French (C1)</p></div></div>
+  </section>
+
+  <section class="chapter" id="links">
+    <div class="ch-head rv"><span class="no">07</span><h2>Links</h2></div>
+    <a class="biglink rv" href="https://github.com/el-vida" target="_blank" rel="noopener">
+      GitHub<small>code &amp; open-source work</small></a>
+    <a class="biglink rv" href="fancy.html">
+      Neural version<small>the same CV as a spiking network</small></a>
+    <a class="biglink rv" href="talks/">
+      Talk animations<small>visual explainers from my talks</small></a>
+    <a class="biglink rv" href="demos/">
+      Demos<small>interactive experiments</small></a>
+    <a class="biglink rv" href="resume.html">
+      Plain resume<small>the quiet version of this page</small></a>
+  </section>
+
+  <footer class="rv">© 2026 Elija Vida — set in Iowan Old Style on warm paper.</footer>
+</div>
+
+<script>
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+  }), { threshold: 0.1 });
+  document.querySelectorAll('.rv').forEach(el => io.observe(el));
+
+  // drag-to-scroll on the experience rail
+  const rail = document.getElementById('rail');
+  let down = false, sx = 0, sl = 0;
+  rail.addEventListener('pointerdown', e => { down = true; sx = e.clientX; sl = rail.scrollLeft; rail.style.cursor = 'grabbing'; });
+  addEventListener('pointerup', () => { down = false; rail.style.cursor = 'grab'; });
+  rail.addEventListener('pointermove', e => { if (down) rail.scrollLeft = sl - (e.clientX - sx); });
+</script>
+</body>
+</html>

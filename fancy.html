@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>elija@idiap: ~ (tty0)</title>
+<style>
+  :root {
+    --bg: #070b08;
+    --fg: #a9d8ad;
+    --muted: #5d8a63;
+    --cyan: #33ff66;
+    --lime: #ffb000;
+    --panel: rgba(7, 14, 9, 0.95);
+    --border: #1c3a22;
+    --mono: "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg); color: var(--fg);
+    font-family: var(--mono);
+    line-height: 1.65; overflow-x: hidden;
+  }
+  a { color: var(--cyan); text-decoration: none; }
+  ::selection { background: var(--lime); color: #000; }
+  body::before {
+    content: ""; position: fixed; inset: 0; z-index: 40; pointer-events: none;
+    background: repeating-linear-gradient(0deg, rgba(0,0,0,0.22) 0 1px, transparent 1px 3px);
+  }
+  body::after {
+    content: ""; position: fixed; inset: 0; z-index: 41; pointer-events: none;
+    background: radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,0.5) 100%);
+  }
+  h1, h2 { text-shadow: 0 0 16px rgba(51, 255, 102, 0.3); }
+  .lastlogin { font-family: var(--mono); color: var(--muted); font-size: 0.8rem; margin-bottom: 0.6rem; }
+  a:hover { text-decoration: underline; }
+  canvas#net { position: fixed; inset: 0; z-index: 0; }
+
+  .wrap { position: relative; z-index: 1; max-width: 56rem; margin: 0 auto; padding: 0 1.4rem; }
+
+  .hero { min-height: 94vh; display: flex; flex-direction: column; justify-content: center; }
+  .hero .prompt { font-family: var(--mono); color: var(--lime); font-size: 0.9rem; margin-bottom: 1rem; }
+  .hero h1 { font-size: clamp(2.6rem, 7vw, 4.6rem); font-weight: 700; letter-spacing: -0.02em; }
+  .hero h1 .cursor { display: inline-block; width: 0.55ch; background: var(--cyan); height: 0.9em;
+    vertical-align: -0.08em; margin-left: 0.1ch; animation: blink 1s steps(1) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+  .hero .role { font-family: var(--mono); color: var(--muted); margin-top: 0.8rem; }
+  .hero .topic { color: var(--cyan); min-height: 1.6em; display: inline-block; }
+  .hero nav { margin-top: 2.2rem; font-family: var(--mono); font-size: 0.9rem; display: flex; gap: 1.6rem; flex-wrap: wrap; }
+  .hero nav a::before { content: "./"; color: var(--muted); }
+  .hint { position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%); text-align: center;
+    font-family: var(--mono); font-size: 0.75rem; color: var(--muted); }
+
+  #fm { position: fixed; right: 1.2rem; bottom: 1.1rem; z-index: 2; pointer-events: none;
+    font-family: var(--mono); font-size: 0.78rem; color: #ffb000; opacity: 0;
+    text-shadow: 0 0 12px rgba(255, 176, 0, 0.35); transition: opacity 0.4s; }
+
+  section { padding: 4.5rem 0 0.5rem; }
+  h2 { font-family: var(--mono); font-size: 1rem; color: var(--lime); margin-bottom: 1.4rem; font-weight: 400; }
+  h2::before { content: "$ "; color: var(--muted); }
+
+  .panel {
+    background: var(--panel); border: 1px solid var(--border); border-left: 3px solid var(--cyan);
+    border-radius: 0; padding: 1.1rem 1.3rem; margin-bottom: 1rem;
+    transition: border-left-color 0.3s, transform 0.3s;
+  }
+  .panel:hover { border-left-color: var(--lime); transform: translateX(4px); }
+  .head { display: flex; justify-content: space-between; gap: 0.4rem 1rem; flex-wrap: wrap; align-items: baseline; }
+  .panel h3 { font-size: 1rem; }
+  .panel .org { color: var(--muted); font-weight: 400; }
+  .when { font-family: var(--mono); font-size: 0.78rem; color: var(--muted); white-space: nowrap; }
+  .panel p { color: var(--muted); font-size: 0.93rem; margin-top: 0.3rem; }
+
+  .tags { display: flex; flex-wrap: wrap; gap: 0.5rem; font-family: var(--mono); font-size: 0.82rem; }
+  .tags span { border: 1px solid var(--border); border-radius: 0; padding: 0.28rem 0.7rem; color: var(--muted);
+    background: var(--panel); }
+  .tags span:hover { border-color: var(--cyan); color: var(--cyan); }
+
+  footer { padding: 4rem 0 46vh; font-family: var(--mono); font-size: 0.8rem; color: var(--muted); }
+  footer .brainword { color: var(--cyan); }
+
+  .rv { opacity: 0; transform: translateY(26px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .rv.in { opacity: 1; transform: none; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .rv { opacity: 1; transform: none; transition: none; }
+    .hero h1 .cursor { animation: none; }
+  }
+</style>
+</head>
+<body>
+<canvas id="net" aria-hidden="true"></canvas>
+<div id="fm" aria-hidden="true">x&#8348; = (1&#8722;t)&#183;x&#8320; + t&#183;x&#8321; &nbsp;// flow matching &#8594; &#129504;</div>
+
+<div class="wrap">
+  <header class="hero">
+    <div class="lastlogin">Last login: Tue Sep  8 09:41:07 2026 on ttys000</div>
+    <div class="prompt">elija@idiap:~$ whoami</div>
+    <h1>Elija Vida<span class="cursor"></span></h1>
+    <p class="role">PhD student · EPFL &amp; Idiap Research Institute<br>
+      working on <span class="topic" id="topic">spiking neural networks</span></p>
+    <nav>
+      <a href="https://github.com/el-vida" target="_blank" rel="noopener">github</a>
+      <a href="resume.html">resume</a>
+      <a href="editorial.html">editorial</a>
+      <a href="talks/">talks</a>
+      <a href="demos/">demos</a>
+    </nav>
+    <div class="hint"># click anywhere to fire a spike<br># scroll: the network grows, then noise anneals into a brain</div>
+  </header>
+
+  <section>
+    <h2>cat research.md</h2>
+    <div class="panel rv"><h3>Spiking speech recognition</h3>
+      <p>End-to-end speech recognition with spiking encoders in SpeechBrain, on TIMIT and LibriSpeech. Hybrid spiking/non-spiking recurrent architectures, evaluated against published baselines.</p></div>
+    <div class="panel rv"><h3>Noise as a resource in spiking neurons</h3>
+      <p>Noisy neuron models with the noise-driven learning rule, trainable noise scales, and noise schedules on speech-command benchmarks.</p></div>
+    <div class="panel rv"><h3>Dendritic processing units</h3>
+      <p>Dendritic branches with heterogeneous, RRAM-realistic delays on temporal benchmarks. Started as my MSc thesis (<a href="https://github.com/EIS-Hub/DenRAM" target="_blank" rel="noopener">code</a>).</p></div>
+    <div class="panel rv"><h3>Spiking generative models</h3>
+      <p>Diffusion and flow matching toward spiking speech synthesis — the topic of my PhD candidacy project.</p></div>
+  </section>
+
+  <section>
+    <h2>cat experience.log</h2>
+    <div class="panel rv"><div class="head"><h3>Research Intern <span class="org">· ABB Corporate Research, Baden</span></h3><span class="when">2025–2026</span></div>
+      <p>Machine learning for software engineering and verification.</p></div>
+    <div class="panel rv"><div class="head"><h3>Freelance Contributor <span class="org">· AI training &amp; evaluation</span></h3><span class="when">2024–</span></div>
+      <p>Code-focused evaluation and training of large language models.</p></div>
+    <div class="panel rv"><div class="head"><h3>Student Assistant <span class="org">· Integrated Digital Systems, RWTH Aachen</span></h3><span class="when">2023–2024</span></div>
+      <p>Software engineering for the neuroAIx FPGA-cluster framework.</p></div>
+    <div class="panel rv"><div class="head"><h3>Intern <span class="org">· Porsche AG, Stuttgart</span></h3><span class="when">2021–2022</span></div>
+      <p>Business-intelligence tooling and predictive-maintenance prototyping.</p></div>
+    <div class="panel rv"><div class="head"><h3>Research Assistant <span class="org">· E.ON Energy Research Center</span></h3><span class="when">2020–2021</span></div>
+      <p>Model predictive control for microgrid frequency stability.</p></div>
+    <div class="panel rv"><div class="head"><h3>Research Assistant <span class="org">· AIT Lab, ETH Zurich</span></h3><span class="when">2020–2021</span></div>
+      <p>Statistical analysis of large-scale keystroke dynamics.</p></div>
+    <div class="panel rv"><div class="head"><h3>ML Intern <span class="org">· CAT Telecom, Bangkok</span></h3><span class="when">2019</span></div>
+      <p>Computer vision for license-plate detection on embedded hardware.</p></div>
+  </section>
+
+  <section>
+    <h2>cat education.md</h2>
+    <div class="panel rv"><div class="head"><h3>PhD <span class="org">· EPFL, hosted at Idiap Research Institute, Martigny</span></h3><span class="when">ongoing</span></div></div>
+    <div class="panel rv"><div class="head"><h3>MSc Computer Engineering <span class="org">· RWTH Aachen University</span></h3><span class="when">2020–2024</span></div>
+      <p>Thesis at the Institute of Neuroinformatics, ETH Zurich. Semester abroad at UC Berkeley (2022).</p></div>
+    <div class="panel rv"><div class="head"><h3>BSc Electrical &amp; Computer Engineering <span class="org">· RWTH Aachen University</span></h3><span class="when">2015–2020</span></div>
+      <p>TIME double-degree exchange at École Centrale de Lille (2017–2019).</p></div>
+  </section>
+
+  <section>
+    <h2>ls ~/publications/</h2>
+    <div class="panel rv"><h3><a href="https://dl.acm.org/doi/10.1145/3604276" target="_blank" rel="noopener">Typing Behavior is About More than Speed</a></h3>
+      <p class="when">Proc. ACM Human-Computer Interaction, 2023</p></div>
+    <div class="panel rv"><h3><a href="https://ieeexplore.ieee.org/document/9827606" target="_blank" rel="noopener">Centralized Model Predictive Control for Transient Frequency Control in Islanded Inverter-Based Microgrids</a></h3>
+      <p class="when">IEEE Transactions on Power Systems, 2023</p></div>
+  </section>
+
+  <section>
+    <h2>echo $SKILLS</h2>
+    <div class="tags rv">
+      <span>python</span><span>c++</span><span>c</span><span>matlab</span><span>vhdl/verilog</span>
+      <span>pytorch</span><span>jax</span><span>tensorflow</span>
+      <span>de:native</span><span>en:C2</span><span>fr:C1</span>
+    </div>
+  </section>
+
+  <footer>© 2026 elija vida · <a href="resume.html">plain resume</a> · <a href="editorial.html">editorial version</a><br><br>
+    <span class="brainword">↓ keep scrolling — it&#8217;s thinking</span></footer>
+</div>
+
+<script>
+(() => {
+  const cv = document.getElementById('net'), ctx = cv.getContext('2d');
+  const noMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const DPR = devicePixelRatio || 1;
+  const N_MIN = 26, N_MAX = 120, LINK = 150;
+  let W, H, nodes = [], edges = [], spikes = [], nVis = N_MIN, morph = 0, scrollP = 0;
+
+  // brain silhouette (side view, unit box: x 0..1 left-to-right, y 0..1 top-to-bottom)
+  const BRAIN = [
+    [0.08,0.60],[0.02,0.44],[0.04,0.28],[0.13,0.13],[0.30,0.03],[0.50,0.00],
+    [0.68,0.03],[0.84,0.11],[0.94,0.26],[0.97,0.41],[0.93,0.54],
+    [0.87,0.58],[0.93,0.66],[0.87,0.77],[0.73,0.80],           /* cerebellum */
+    [0.64,0.78],[0.60,0.90],[0.52,0.92],[0.55,0.76],           /* brain stem */
+    [0.44,0.73],[0.28,0.71],[0.15,0.67]
+  ];
+  function inBrain(x, y) {
+    let inside = false;
+    for (let i = 0, j = BRAIN.length - 1; i < BRAIN.length; j = i++) {
+      const [xi, yi] = BRAIN[i], [xj, yj] = BRAIN[j];
+      if ((yi > y) !== (yj > y) && x < (xj - xi) * (y - yi) / (yj - yi) + xi) inside = !inside;
+    }
+    return inside;
+  }
+
+  function brainTargets() {
+    // brain box: centered, wider than tall
+    const bw = Math.min(W * 0.72, H * 0.9 * 1.25), bh = bw / 1.25;
+    const ox = (W - bw) / 2, oy = (H - bh) / 2 - H * 0.02;
+    const pts = [];
+    while (pts.length < N_MAX) {
+      const x = Math.random(), y = Math.random();
+      if (inBrain(x, y)) pts.push([ox + x * bw, oy + y * bh]);
+    }
+    return pts;
+  }
+
+  // diffusion layer: noise particles transported to the brain by straight
+  // flow-matching paths, x_t = (1-t)x0 + t x1, with annealing jitter
+  const P_N = 150;
+  let parts = [];
+
+  function resize() {
+    W = cv.width = innerWidth * DPR;
+    H = cv.height = innerHeight * DPR;
+    cv.style.width = innerWidth + 'px'; cv.style.height = innerHeight + 'px';
+    const targets = brainTargets();
+    nodes = Array.from({length: N_MAX}, (_, i) => ({
+      fx: Math.random() * W, fy: Math.random() * H,
+      vx: (Math.random() - 0.5) * 0.18 * DPR,
+      vy: (Math.random() - 0.5) * 0.18 * DPR,
+      tx: targets[i][0], ty: targets[i][1],
+      x: 0, y: 0, glow: 0, seed: Math.random() * 7
+    }));
+    const pTargets = brainTargets();
+    parts = Array.from({length: P_N}, (_, i) => ({
+      x0: Math.random() * W, y0: Math.random() * H,
+      dx: (Math.random() - 0.5) * 0.10 * DPR,
+      dy: (Math.random() - 0.5) * 0.10 * DPR,
+      tx: pTargets[i % pTargets.length][0], ty: pTargets[i % pTargets.length][1],
+      seed: Math.random() * 7
+    }));
+  }
+  resize(); addEventListener('resize', resize);
+
+  addEventListener('scroll', () => {
+    const h = document.documentElement;
+    scrollP = Math.min(1, h.scrollTop / (h.scrollHeight - h.clientHeight));
+  }, { passive: true });
+
+  function rebuildEdges() {
+    edges = [];
+    const L = LINK * DPR * (1 - 0.38 * morph);   // brain is denser: shorter links
+    for (let i = 0; i < nVis; i++) for (let j = i + 1; j < nVis; j++) {
+      const dx = nodes[i].x - nodes[j].x, dy = nodes[i].y - nodes[j].y;
+      const d = Math.hypot(dx, dy);
+      if (d < L) edges.push({ a: i, b: j, d, L });
+      if (edges.length > 480) return;
+    }
+  }
+
+  function fire(i) {
+    nodes[i].glow = 1;
+    edges.forEach(e => {
+      if ((e.a === i || e.b === i) && spikes.length < 300)
+        spikes.push({ e, t: 0, from: e.a === i ? 'a' : 'b', speed: 0.012 + Math.random() * 0.02 });
+    });
+  }
+
+  addEventListener('click', ev => {
+    const x = ev.clientX * DPR, y = ev.clientY * DPR;
+    let best = 0, bd = 1e12;
+    for (let i = 0; i < nVis; i++) {
+      const d = (nodes[i].x - x) ** 2 + (nodes[i].y - y) ** 2;
+      if (d < bd) { bd = d; best = i; }
+    }
+    fire(best);
+  });
+
+  let frame = 0;
+  function step() {
+    frame++;
+    // network grows with scroll; morph into brain over the last stretch
+    nVis = Math.round(N_MIN + (N_MAX - N_MIN) * Math.min(1, scrollP / 0.85));
+    const m = Math.min(1, Math.max(0, (scrollP - 0.55) / 0.4));
+    morph = m * m * (3 - 2 * m);   // smoothstep
+
+    nodes.forEach(n => {
+      if (!noMotion) {
+        n.fx += n.vx; n.fy += n.vy;
+        if (n.fx < 0 || n.fx > W) n.vx *= -1;
+        if (n.fy < 0 || n.fy > H) n.vy *= -1;
+      }
+      // brain keeps a gentle jitter so it stays alive at full morph
+      const jx = Math.sin(frame * 0.02 + n.seed) * 2 * DPR * morph;
+      const jy = Math.cos(frame * 0.017 + n.seed * 1.7) * 2 * DPR * morph;
+      n.x = n.fx + (n.tx - n.fx) * morph + jx;
+      n.y = n.fy + (n.ty - n.fy) * morph + jy;
+      n.glow *= 0.96;
+    });
+
+    if (frame % 24 === 1) rebuildEdges();
+    // the fuller the brain, the more it fires
+    const rate = Math.max(12, 50 - Math.floor(scrollP * 34));
+    if (!noMotion && frame % rate === 0) fire(Math.floor(Math.random() * nVis));
+
+    ctx.clearRect(0, 0, W, H);
+
+    // flow-matching particle transport (pink noise cloud -> brain)
+    const noiseAmp = (1 - morph) * 14 * DPR;
+    document.getElementById('fm').style.opacity = morph > 0.05 ? Math.min(1, morph * 1.6) : 0;
+    parts.forEach(p => {
+      if (!noMotion) {
+        p.x0 += p.dx; p.y0 += p.dy;
+        if (p.x0 < 0 || p.x0 > W) p.dx *= -1;
+        if (p.y0 < 0 || p.y0 > H) p.dy *= -1;
+      }
+      const nx = Math.sin(frame * 0.03 + p.seed * 3) * noiseAmp;
+      const ny = Math.cos(frame * 0.026 + p.seed * 5) * noiseAmp;
+      const px = p.x0 + (p.tx - p.x0) * morph + nx;
+      const py = p.y0 + (p.ty - p.y0) * morph + ny;
+      // velocity streak while mid-transport
+      const streak = morph * (1 - morph) * 4;
+      if (streak > 0.1) {
+        const dxs = (p.tx - p.x0), dys = (p.ty - p.y0);
+        const len = Math.hypot(dxs, dys) || 1;
+        ctx.strokeStyle = 'rgba(255, 176, 0, 0.22)';
+        ctx.lineWidth = DPR * 0.8;
+        ctx.beginPath(); ctx.moveTo(px, py);
+        ctx.lineTo(px - dxs / len * streak * 9 * DPR, py - dys / len * streak * 9 * DPR);
+        ctx.stroke();
+      }
+      ctx.fillStyle = `rgba(255, 200, 80, ${0.22 + 0.4 * morph})`;
+      ctx.beginPath(); ctx.arc(px, py, (1 + 0.6 * morph) * DPR, 0, 7); ctx.fill();
+    });
+
+    ctx.lineWidth = DPR * 0.6;
+    edges.forEach(e => {
+      const a = nodes[e.a], b = nodes[e.b];
+      ctx.strokeStyle = `rgba(70, 210, 100, ${(0.13 + 0.07 * morph) * (1 - e.d / e.L)})`;
+      ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+    });
+    spikes = spikes.filter(s => s.t <= 1 && s.e.a < nVis && s.e.b < nVis);
+    spikes.forEach(s => {
+      s.t += s.speed;
+      const A = nodes[s.from === 'a' ? s.e.a : s.e.b], B = nodes[s.from === 'a' ? s.e.b : s.e.a];
+      const x = A.x + (B.x - A.x) * s.t, y = A.y + (B.y - A.y) * s.t;
+      ctx.fillStyle = 'rgba(255, 176, 0, 0.9)';
+      ctx.beginPath(); ctx.arc(x, y, 2.2 * DPR, 0, 7); ctx.fill();
+      if (s.t >= 1 && Math.random() < 0.35) {
+        const target = s.from === 'a' ? s.e.b : s.e.a;
+        if (nodes[target].glow < 0.5) fire(target);
+      }
+    });
+    for (let i = 0; i < nVis; i++) {
+      const n = nodes[i];
+      ctx.fillStyle = `rgba(110, 255, 140, ${0.35 + n.glow * 0.65})`;
+      ctx.beginPath(); ctx.arc(n.x, n.y, (1.4 + n.glow * 2.6) * DPR, 0, 7); ctx.fill();
+    }
+    requestAnimationFrame(step);
+  }
+  rebuildEdges(); step();
+
+  // rotating research topic
+  const topics = ['spiking neural networks', 'speech recognition', 'dendritic computation', 'noise as a resource', 'spiking generative models'];
+  const el = document.getElementById('topic');
+  let ti = 0, ci = 0, dir = 1;
+  if (!noMotion) setInterval(() => {
+    ci += dir;
+    const t = topics[ti];
+    el.textContent = t.slice(0, ci) || ' ';
+    if (ci === t.length) { dir = 0; setTimeout(() => dir = -1, 1600); }
+    if (ci === 0 && dir === -1) { dir = 1; ti = (ti + 1) % topics.length; }
+  }, 55);
+
+  // reveals
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+  }), { threshold: 0.12 });
+  document.querySelectorAll('.rv').forEach((el2, i) => {
+    el2.style.transitionDelay = (i % 3) * 80 + 'ms';
+    io.observe(el2);
+  });
+})();
+</script>
+</body>
+</html>

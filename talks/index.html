@@ -251,7 +251,7 @@ topic to open it; each animation also exists as a slide deck for presenting
 </div>
 
 <div class="anim">
-  <h2>CTC on the word "see"</h2>
+  <h2>CTC: the rule, then a trained model's own output</h2>
   <p>How CTC turns per-frame predictions into a transcript without knowing
   the alignment. One alignment of ten frames collapses by the two rules
   (merge repeats, then drop the blank &empty;); many alignments give the
@@ -259,11 +259,22 @@ topic to open it; each animation also exists as a slide deck for presenting
   paths through a lattice of letters interleaved with blanks. The double
   "e" shows why the blank exists: the skip between two identical letters
   is forbidden, or they would merge. Layout after Hannun (2017).</p>
+  <p>The last three slides drop the toy and use the real per-frame
+  posteriors of a spiking CTC network trained on TIMIT, run on the same
+  utterance as the pipeline animation above, which the model never saw
+  during training. The famous peakiness is measured rather than drawn: the
+  blank holds 64% of the probability mass on average and wins 66% of the
+  308 frames, and only 33 short bursts carry the phones. Collapsing the
+  frame-wise argmax and aligning it against the reference by edit distance
+  shows where a greedy decode without a language model succeeds
+  (<code>sh iy</code> for "she", <code>g r iy z iy w aa sh</code> for
+  "greasy wash") and where it substitutes or drops.</p>
   <video muted loop playsinline controls preload="metadata"
          src="media/CTCAlignment.mp4"></video>
   <p class="caption">
-    Yellow: one valid path through the lattice. Gray: other paths in the
-    sum. Red: the forbidden same-letter skip.
+    Yellow: one valid path through the lattice, and the real phone peaks.
+    Gray: other paths, and the blank probability. Green and red: matches
+    and errors in the alignment.
     <a href="CTCAlignment.html">Present as full-screen deck</a>
     (advance with arrow keys).
   </p>

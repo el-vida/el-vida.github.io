@@ -1,0 +1,65 @@
+/* Light mode for Manim Slides decks.
+   The site stores its choice in localStorage("theme"); deck-theme.js copies it
+   onto <html data-theme>. Slides are full-bleed background videos, so "light
+   mode" here means the video itself must read as light.
+
+   The per-slide clips are rendered dark only (talks/media-light/ holds light
+   renders of whole talks, not per-slide segments), so light mode inverts them:
+   invert(1) flips dark ground to light, hue-rotate(180deg) puts the hues back.
+   If per-slide light renders are ever exported to <Deck>_assets-light/, set
+   USE_LIGHT_ASSETS in deck-theme.js and this filter switches itself off. */
+
+:root[data-theme="light"] {
+  --deck-bg: #faf6ef;
+  --deck-fg: #17140e;
+  --deck-rule: #e2dccd;
+  --deck-card: #fffdf8;
+  --deck-accent: #b4531f;
+}
+
+:root[data-theme="light"] body,
+:root[data-theme="light"] .reveal {
+  background: var(--deck-bg);
+  color: var(--deck-fg);
+}
+
+/* .slides has z-index:1 and covers .backgrounds, where the slide videos live.
+   It must stay transparent or light mode is just a blank page. */
+:root[data-theme="light"] .reveal .slides {
+  background: transparent;
+  color: var(--deck-fg);
+}
+
+/* the section's inline data-background-color is dark; override the layer reveal builds from it */
+:root[data-theme="light"] .reveal .slide-background,
+:root[data-theme="light"] .reveal .backgrounds {
+  background-color: var(--deck-bg) !important;
+}
+
+:root[data-theme="light"].deck-invert .reveal .slide-background-content video,
+:root[data-theme="light"].deck-invert .reveal .slide-background video,
+:root[data-theme="light"].deck-invert .reveal video.slide-background-video {
+  filter: invert(1) hue-rotate(180deg);
+}
+
+/* reveal chrome */
+:root[data-theme="light"] .reveal .controls { color: var(--deck-accent); }
+:root[data-theme="light"] .reveal .progress { color: var(--deck-accent); background: rgba(0,0,0,.12); }
+:root[data-theme="light"] .reveal .slide-number { background: rgba(0,0,0,.05); color: var(--deck-fg); }
+
+/* toggle, shaped like the one on the rest of the site */
+#deckthemebtn {
+  position: fixed; top: 1.1rem; right: 1.2rem; z-index: 60; cursor: pointer;
+  width: 2.5rem; height: 2.5rem; border-radius: 50%; line-height: 1; font-size: 1.05rem;
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid rgba(255,255,255,.28); background: rgba(20,24,30,.72); color: #e8e8e6;
+  font-family: Georgia, "Iowan Old Style", serif;
+  transition: transform .3s, border-color .3s, opacity .3s;
+  opacity: .25;
+}
+#deckthemebtn:hover { transform: rotate(20deg) scale(1.08); opacity: 1; }
+:root[data-theme="light"] #deckthemebtn {
+  border-color: var(--deck-rule); background: var(--deck-card); color: var(--deck-fg);
+}
+:root[data-theme="light"] #deckthemebtn:hover { border-color: var(--deck-accent); }
+@media print { #deckthemebtn { display: none; } }

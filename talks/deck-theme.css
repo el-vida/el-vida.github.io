@@ -1,4 +1,4 @@
-/* Light mode for Manim Slides decks.
+/* Light mode + navigation UI for Manim Slides decks.
    The site stores its choice in localStorage("theme"); deck-theme.js copies it
    onto <html data-theme>. Slides are full-bleed background videos, so "light
    mode" here means the video itself must read as light.
@@ -47,19 +47,47 @@
 :root[data-theme="light"] .reveal .progress { color: var(--deck-accent); background: rgba(0,0,0,.12); }
 :root[data-theme="light"] .reveal .slide-number { background: rgba(0,0,0,.05); color: var(--deck-fg); }
 
-/* toggle, shaped like the one on the rest of the site */
-#deckthemebtn {
-  position: fixed; top: 1.1rem; right: 1.2rem; z-index: 60; cursor: pointer;
-  width: 2.5rem; height: 2.5rem; border-radius: 50%; line-height: 1; font-size: 1.05rem;
-  display: flex; align-items: center; justify-content: center;
-  border: 1px solid rgba(255,255,255,.28); background: rgba(20,24,30,.72); color: #e8e8e6;
-  font-family: Georgia, "Iowan Old Style", serif;
-  transition: transform .3s, border-color .3s, opacity .3s;
-  opacity: .25;
+/* ---------------------------------------------------------------- deck UI */
+/* Clusters are fixed so they keep working when the deck goes fullscreen;
+   deck-theme.js re-parents #deckui into the fullscreen element as needed. */
+#deckui { position: static; }
+
+.deckui-cluster {
+  position: fixed; z-index: 60; display: flex; align-items: center; gap: .5rem;
+  opacity: .18;                 /* a ghost while presenting, never fully gone */
+  transition: opacity .35s ease; pointer-events: auto;
 }
-#deckthemebtn:hover { transform: rotate(20deg) scale(1.08); opacity: 1; }
-:root[data-theme="light"] #deckthemebtn {
+#deckui.awake .deckui-cluster { opacity: .85; }
+.deckui-cluster:hover { opacity: 1 !important; }
+.deckui-tl { top: 1.1rem; left: 1.2rem; }
+.deckui-tr { top: 1.1rem; right: 1.2rem; }
+.deckui-br { bottom: 1.1rem; right: 1.2rem; }
+
+.deckbtn, .deckpill {
+  cursor: pointer; line-height: 1; text-decoration: none;
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid rgba(255,255,255,.28);
+  background: rgba(18,22,28,.72); color: #e8e8e6;
+  font-family: Georgia, "Iowan Old Style", Palatino, serif;
+  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+  transition: transform .25s, border-color .25s, background .25s, color .25s, opacity .25s;
+}
+.deckbtn { width: 2.4rem; height: 2.4rem; border-radius: 50%; font-size: 1rem; }
+.deckpill { height: 2.4rem; padding: 0 .95rem; border-radius: 999px; font-size: .85rem; gap: .45rem; }
+.deckbtn:hover, .deckpill:hover { transform: scale(1.08); border-color: #fff; }
+.deckbtn:focus-visible, .deckpill:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
+#deckthemebtn:hover { transform: rotate(20deg) scale(1.08); }
+.deckbtn[disabled] { opacity: .35; cursor: default; transform: none; }
+.deckcount { font-variant-numeric: tabular-nums; letter-spacing: .04em; cursor: default; }
+
+:root[data-theme="light"] .deckbtn,
+:root[data-theme="light"] .deckpill {
   border-color: var(--deck-rule); background: var(--deck-card); color: var(--deck-fg);
 }
-:root[data-theme="light"] #deckthemebtn:hover { border-color: var(--deck-accent); }
-@media print { #deckthemebtn { display: none; } }
+:root[data-theme="light"] .deckbtn:hover,
+:root[data-theme="light"] .deckpill:hover { border-color: var(--deck-accent); color: var(--deck-accent); }
+
+@media (prefers-reduced-motion: reduce) {
+  .deckui-cluster, .deckbtn, .deckpill { transition: none; }
+}
+@media print { #deckui { display: none; } }

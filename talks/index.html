@@ -11,15 +11,25 @@
     --link: #1a5fb4;
     --rule: #ddd;
     --bg: #fffdf9;
+    --shot: #fdfdfb;
   }
   @media (prefers-color-scheme: dark) {
-    :root {
+    :root:not([data-theme="light"]) {
       --fg: #d8d8d8;
       --muted: #9a9a9a;
       --link: #7cb0e8;
       --rule: #333;
       --bg: #16181d;
+      --shot: #111318;
     }
+  }
+  :root[data-theme="dark"] {
+    --fg: #d8d8d8;
+    --muted: #9a9a9a;
+    --link: #7cb0e8;
+    --rule: #333;
+    --bg: #16181d;
+    --shot: #111318;
   }
   body {
     font-family: Georgia, serif;
@@ -59,8 +69,22 @@
     display: block;
     border-radius: 10px;
     box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
-    background: #111318;
+    background: var(--shot);
   }
+  #theme {
+    position: fixed;
+    top: 0.9rem;
+    right: 0.9rem;
+    font: inherit;
+    font-size: 0.8rem;
+    color: var(--muted);
+    background: var(--bg);
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    padding: 0.25rem 0.7rem;
+    cursor: pointer;
+  }
+  #theme:hover { color: var(--link); border-color: var(--link); }
   .caption {
     font-size: 0.9rem;
     color: var(--muted);
@@ -69,6 +93,7 @@
 </style>
 </head>
 <body>
+<button id="theme" type="button">light / dark</button>
 <p><a href="../">&larr; home</a></p>
 <h1>Animations</h1>
 <p>Concept animations for talks, made with Manim, grouped by topic. Click a
@@ -272,7 +297,61 @@ topic to open it; each animation also exists as a slide deck for presenting
 </details>
 
 <details class="topic">
-<summary><h2>Generative models and inference</h2><span class="count">9 animations</span></summary>
+<summary><h2>Attention and sequence models</h2><span class="count">2 animations</span></summary>
+
+<div class="anim">
+  <h2>Attention, step by step</h2>
+  <p>Queries, keys and values on an example small enough to check by hand:
+  five tokens, four readable embedding axes (animate, liquid, action,
+  determiner), and hand-set projection matrices, so every score and weight
+  on screen is an exact computation of the vectors shown. The query of
+  <code>drank</code> asks for an animate thing and a liquid; the softmax
+  hands 0.375 to <code>cat</code> and 0.375 to <code>milk</code> against
+  0.084 for each determiner, and <code>cat</code> puts 0.454 back on
+  <code>drank</code>. Stacking every query gives the attention matrix and
+  the familiar one-liner. A second head, scored on position instead of
+  content, shows what several heads buy. The last slide prices it: softmax
+  attention costs N&sup2;d, 128M multiplies at N = 1000 and d = 64, while
+  reassociating to Q(K&#8868;V) costs Nd&sup2;, 8.2M, a 16&times; saving that
+  grows to 64&times; at N = 4096; the price is measured too, the peak weight
+  flattening from 0.375 to 0.230 once the softmax is gone.</p>
+  <video muted loop playsinline controls preload="metadata"
+         src="media/AttentionQkv.mp4"></video>
+  <p class="caption">
+    Yellow: queries and weights. Blue: keys. Green: values and the linear kernel. Projections are hand-set for readability and labeled as such.
+    <a href="AttentionQkv.html">Present as full-screen deck</a>
+    (advance with arrow keys).
+  </p>
+</div>
+
+<div class="anim">
+  <h2>BERT, GPT, and what the mask decides</h2>
+  <p>The same attention three times over, separated only by which entries of
+  the mask are allowed. BERT lets every token see every other one and trains
+  by hiding about 15% of them, so <code>your</code> is rebuilt from
+  <code>she had</code> and <code>dark suit</code> at once. GPT forbids
+  looking ahead, and that triangular mask is what makes left-to-right
+  generation possible at the cost of never seeing the right context. The
+  encoder-decoder pair adds cross-attention, queries from the decoder and
+  keys and values from the encoder, which is the shape of a sequence-to-
+  sequence speech recogniser. The last slide is the trade and the way
+  around it: a masked diffusion language model is BERT run repeatedly, which
+  buys bidirectional context and generation together at the price of many
+  passes, on the same five tokens the diffusion-language-model animation
+  corrupts.</p>
+  <video muted loop playsinline controls preload="metadata"
+         src="media/BertFlavors.mp4"></video>
+  <p class="caption">
+    Green: bidirectional. Yellow: causal. Purple: masked diffusion. The mask matrices are exact; predicted tokens are illustrations.
+    <a href="BertFlavors.html">Present as full-screen deck</a>
+    (advance with arrow keys).
+  </p>
+</div>
+
+</details>
+
+<details class="topic">
+<summary><h2>Generative models and inference</h2><span class="count">11 animations</span></summary>
 
 <div class="anim">
   <h2>What "intractable" means</h2>
@@ -416,6 +495,56 @@ topic to open it; each animation also exists as a slide deck for presenting
 </div>
 
 <div class="anim">
+  <h2>Predicting noise, or predicting v</h2>
+  <p>After the schedule is fixed there is still a choice: the network can be
+  asked for the noise &epsilon;, for the clean image x&#8320;, or for
+  v = &radic;&#x3B1;&#772;&nbsp;&epsilon; &minus;
+  &radic;(1&minus;&#x3B1;&#772;)&nbsp;x&#8320;. On paper they are equivalent;
+  in practice the choice decides what the loss teaches. Measured on real
+  MNIST with the standard 1000-step schedule: at t = 999 the input and the
+  &epsilon;-target are correlated 1.000, so simply copying the input scores
+  MSE 0.00004 against 1.00 for predicting zeros, and the loss has almost
+  nothing left to teach. Sampling makes it worse, because recovering
+  x&#8320; divides by &radic;&#x3B1;&#772;, a 157&times; error amplification
+  at the last step, which is why samplers clip. The v-target avoids both:
+  its coefficients never exceed one, and copying the input scores 1.92,
+  worse than predicting zeros. The closing picture says it in one frame:
+  at t = 999 the input row and the &epsilon; row are the same noise, while
+  the v row is still a crisp digit.</p>
+  <video muted loop playsinline controls preload="metadata"
+         src="media/VvsEpsilon.mp4"></video>
+  <p class="caption">
+    Blue: the &epsilon; target. Purple: the v target. All correlations, MSEs and the amplification curve are computed on real MNIST.
+    <a href="VvsEpsilon.html">Present as full-screen deck</a>
+    (advance with arrow keys).
+  </p>
+</div>
+
+<div class="anim">
+  <h2>Stable Diffusion, and how it relates to DDPM</h2>
+  <p>Latent diffusion in four moves. First the bill: 512&times;512&times;3 is
+  786,432 numbers per denoising step, and attention over pixels would compare
+  262,144 positions, 69 billion pairs. Then the observation, shown as a real
+  DCT truncation of a real digit: keeping the largest 100 of 784 frequencies
+  is 8&times; smaller at RMSE 0.177 and still plainly a three. Then the
+  honest limit: at the 48&times; ratio Stable Diffusion actually uses, a
+  fixed transform collapses to RMSE 0.442, which is exactly why the model
+  trains an autoencoder instead. After that nothing is new: the same DDPM
+  equations run on a 64&times;64&times;4 latent, the prompt enters through
+  cross-attention (queries from the latent patches, keys and values from the
+  text encoder), classifier-free guidance exaggerates the difference between
+  the conditional and unconditional predictions, and a DDIM-style solver
+  finishes in 20 to 50 steps.</p>
+  <video muted loop playsinline controls preload="metadata"
+         src="media/StableDiffusion.mp4"></video>
+  <p class="caption">
+    The compression panels are exact DCT truncations of the digit shown; the pipeline diagrams are schematic.
+    <a href="StableDiffusion.html">Present as full-screen deck</a>
+    (advance with arrow keys).
+  </p>
+</div>
+
+<div class="anim">
   <h2>Flow matching vs diffusion</h2>
   <p>Generation as transport: carry noise samples to the data. Diffusion
   does it with a stochastic walk; here the data is a two-Gaussian mixture,
@@ -480,7 +609,144 @@ topic to open it; each animation also exists as a slide deck for presenting
 
 </details>
 
+<details class="topic">
+<summary><h2>Stochastic processes</h2><span class="count">4 animations</span></summary>
+
+<div class="anim">
+  <h2>Ito's lemma: why stochastic calculus adds a term</h2>
+  <p>Ordinary calculus works because a smooth curve becomes a straight line
+  when you zoom in. Brownian motion never straightens: zoom into a real path
+  and it looks the same, and the two sums measured along it explain why. The
+  total length diverges (6.6, then 24.8, then 79.8 as the steps get finer),
+  while the sum of squared increments converges on the elapsed time
+  (0.731, 0.976, 0.997 against T = 1). That is the whole content of
+  (dW)&sup2; = dt, so the Taylor expansion keeps a second-order term and the
+  chain rule gains &frac12;f&Prime;dt. The check is done on the same path:
+  W&#84;&sup2; minus 2&int;W dW comes out 0.992, and it should be T = 1.
+  The cost of ignoring it is shown on geometric Brownian motion, where the
+  mean finishes at 111 but the median at 102 and 58% of paths end below the
+  average: that gap is the &minus;&sigma;&sup2;/2 correction.</p>
+  <video muted loop playsinline controls preload="metadata"
+         src="media/ItoLemma.mp4"></video>
+  <p class="caption">
+    Blue: a real Brownian path. Green: convergent squared increments. Orange: divergent length and the GBM ending.
+    <a href="ItoLemma.html">Present as full-screen deck</a>
+    (advance with arrow keys).
+  </p>
+</div>
+
+<div class="anim">
+  <h2>The Ornstein-Uhlenbeck process</h2>
+  <p>Brownian motion with a spring attached, and the process that quietly
+  underlies both halves of this page. One particle first: the mean relaxes as
+  x&#8320;e<sup>&minus;&theta;t</sup> with a half-life of 0.46 s, simulated
+  1.182 against 1.181 predicted. Then four thousand of them, settling into a
+  stationary Gaussian of variance &sigma;&sup2;/2&theta;, measured 0.222
+  against 0.213. Its memory decays exponentially, and the measured
+  autocorrelations match theory to three decimals (0.861, 0.741, 0.549).
+  The last slide is the punchline: a leaky membrane driven by noisy input is
+  an OU process, and so is the DDPM forward chain, whose 400-step simulation
+  reproduces the OU closed form (mean +0.228 against +0.225, variance 0.990
+  against 0.983).</p>
+  <video muted loop playsinline controls preload="metadata"
+         src="media/OrnsteinUhlenbeck.mp4"></video>
+  <p class="caption">
+    Blue: OU paths. Green: the stationary distribution. Purple: the autocorrelation. All comparisons are simulation against closed form.
+    <a href="OrnsteinUhlenbeck.html">Present as full-screen deck</a>
+    (advance with arrow keys).
+  </p>
+</div>
+
+<div class="anim">
+  <h2>Langevin dynamics: noise turns optimisation into sampling</h2>
+  <p>How to draw samples from a distribution when all you have is the slope
+  of its log-density, which is exactly the situation a diffusion model is in.
+  Following the slope alone collapses 220 particles onto 2 points, the modes:
+  that finds peaks, not proportions. Adding noise of precisely the right size
+  turns the same update into a sampler, and the histogram then reproduces the
+  density including the relative weights, 0.364 of the mass in the smaller
+  mode against 0.365 exact. Watching a single particle for a long time shows
+  the same thing in time rather than in ensemble, with 81 crossings between
+  the modes in this run, and it also shows why sampling is slow when modes
+  sit far apart. That difficulty is what annealing over many noise levels
+  fixes, which is the step from Langevin to score-based diffusion.</p>
+  <video muted loop playsinline controls preload="metadata"
+         src="media/LangevinDynamics.mp4"></video>
+  <p class="caption">
+    Orange: noiseless ascent. Blue: Langevin particles and their histogram. Purple: one long chain. The score is closed form, so every path is exact.
+    <a href="LangevinDynamics.html">Present as full-screen deck</a>
+    (advance with arrow keys).
+  </p>
+</div>
+
+<div class="anim">
+  <h2>The Schrodinger bridge</h2>
+  <p>Given where a cloud of particles starts and where it ends up, what did
+  it most likely do in between? Plain diffusion is the right physics with the
+  wrong ending: run it forward and 0.91 of the mass lands in the wrong place.
+  The bridge is the process closest to that reference, in KL, which still
+  respects both marginals, and it is computed here exactly rather than
+  sketched: Sinkhorn alternately fixes the start and the end, and the two
+  marginal errors fall to 10<sup>&minus;16</sup>. The paths shown are true
+  draws from it, an endpoint sampled from the coupling followed by a
+  Brownian bridge, and from a single starting point the mass splits 0.50 /
+  0.50 between the two targets. One knob controls everything: as the
+  reference noise shrinks the conditional spread falls 0.83, 0.58, 0.23 and
+  the bridge becomes optimal transport, the straight-line picture of flow
+  matching; with pure noise at one end it is the diffusion forward process
+  instead.</p>
+  <video muted loop playsinline controls preload="metadata"
+         src="media/SchrodingerBridge.mp4"></video>
+  <p class="caption">
+    Green: the start distribution. Yellow: the target. Purple: true bridge samples. Orange: unconstrained diffusion, for comparison.
+    <a href="SchrodingerBridge.html">Present as full-screen deck</a>
+    (advance with arrow keys).
+  </p>
+</div>
+
+</details>
+
 <script>
+  (function () {
+    var root = document.documentElement;
+    var stored = null;
+    try { stored = localStorage.getItem("theme"); } catch (e) {}
+    if (stored) { root.setAttribute("data-theme", stored); }
+    function mode() {
+      return root.getAttribute("data-theme")
+        || (window.matchMedia("(prefers-color-scheme: dark)").matches
+            ? "dark" : "light");
+    }
+    function paint() {
+      var light = mode() === "light";
+      document.querySelectorAll(".anim video").forEach(function (v) {
+        var want = light ? v.src.replace("/media/", "/media-light/")
+                         : v.src.replace("/media-light/", "/media/");
+        if (v.src !== want) {
+          var wasPlaying = !v.paused;
+          v.src = want;
+          v.load();
+          if (wasPlaying) { v.play().catch(function () {}); }
+        }
+      });
+    }
+    document.querySelectorAll(".anim video").forEach(function (v) {
+      v.addEventListener("error", function () {
+        if (v.src.indexOf("/media-light/") > -1) {
+          v.src = v.src.replace("/media-light/", "/media/");
+          v.load();
+        }
+      });
+    });
+    document.getElementById("theme").addEventListener("click", function () {
+      var next = mode() === "light" ? "dark" : "light";
+      root.setAttribute("data-theme", next);
+      try { localStorage.setItem("theme", next); } catch (e) {}
+      paint();
+    });
+    paint();
+  })();
+
   document.querySelectorAll("details.topic").forEach(function (d) {
     function sync() {
       d.querySelectorAll("video").forEach(function (v) {

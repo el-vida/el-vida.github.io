@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Elija Vida, PhD student at EPFL and Idiap. Spiking neural networks, speech recognition, neuromorphic computing.">
+<meta name="description" content="Elija Vida, PhD student at EPFL and Idiap. Spiking neural networks, diffusion models, speech recognition, neuromorphic computing.">
 <title>Elija Vida</title>
 <style>
   :root {
@@ -14,6 +14,7 @@
     --accent: #b4531f;
     --card: #fffdf8;
     --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+    --mono: "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
@@ -62,14 +63,26 @@
     display: flex; flex-direction: column; justify-content: center;
   }
   .kicker { font-size: 0.8rem; letter-spacing: 0.26em; text-transform: uppercase; color: var(--muted); margin-bottom: 1rem; }
+
   h1 {
-    font-size: clamp(2.4rem, 6vw, 3.4rem); font-weight: 500; line-height: 1.05; letter-spacing: -0.02em;
+    font-size: clamp(2.4rem, 6vw, 3.4rem); font-weight: 500; line-height: 1.05;
+    letter-spacing: -0.02em; min-height: 1.05em;
   }
-  h1 .w { display: inline-block; overflow: hidden; vertical-align: bottom; }
-  h1 .w i { display: inline-block; font-style: normal; transform: translateY(110%); animation: rise 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) forwards; }
-  h1 .w:nth-child(2) i { animation-delay: 0.1s; }
-  @keyframes rise { to { transform: none; } }
-  .lede { font-size: 1.08rem; color: var(--muted); margin-top: 1.4rem; }
+  h1.replayable { cursor: pointer; }
+  h1.replayable:focus-visible { outline: 2px solid var(--accent); outline-offset: 6px; border-radius: 4px; }
+  h1 .ch { display: inline-block; white-space: pre; will-change: filter, opacity; }
+  h1 .ch.noise { color: var(--muted); opacity: 0.75; filter: blur(1.4px); }
+  h1 .ch.clean { color: var(--ink); opacity: 1; filter: none;
+    transition: color 0.5s ease, opacity 0.5s ease, filter 0.5s ease; }
+
+  .tstep {
+    font-family: var(--mono); font-size: 0.7rem; color: var(--muted);
+    letter-spacing: 0.14em; margin-top: 0.5rem; height: 1rem;
+    opacity: 0; transition: opacity 0.6s ease;
+  }
+  .tstep.show { opacity: 0.75; }
+
+  .lede { font-size: 1.08rem; color: var(--muted); margin-top: 1.2rem; }
   .lede em { color: var(--ink); font-style: italic; }
 
   nav { margin-top: 2.6rem; border-top: 1px solid var(--rule); }
@@ -77,24 +90,26 @@
   .group .lab { font-size: 0.75rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--muted); min-width: 6.5rem; }
   .group a { font-size: 1.05rem; color: var(--ink); }
   .group a:hover { color: var(--accent); text-decoration: none; }
-  .group a + a::before { content: "· "; color: var(--muted); margin-right: 0.35rem; }
+  .group a + a::before { content: "\00b7 "; color: var(--muted); margin-right: 0.35rem; }
 
   footer { margin-top: 2.2rem; color: var(--muted); font-size: 0.85rem; }
 
   @media (prefers-reduced-motion: reduce) {
-    h1 .w i { transform: none; animation: none; }
+    h1 .ch, h1 .ch.clean { filter: none; opacity: 1; transition: none; }
   }
 </style>
 </head>
 <body>
-<button id="themebtn" aria-label="Toggle color scheme">◐</button>
+<button id="themebtn" aria-label="Toggle color scheme">&#9680;</button>
 
 <main>
-  <p class="kicker">PhD student · EPFL &amp; Idiap Research Institute</p>
-  <h1><span class="w"><i>Elija&nbsp;</i></span><span class="w"><i>Vida</i></span></h1>
-  <p class="lede">I work on <em>spiking neural networks</em>: speech recognition with spiking
-  architectures, noise in neuron models as a resource for learning, and dendritic computation.
-  At the moment I am building spiking generative models for speech.</p>
+  <p class="kicker">PhD student &middot; EPFL &amp; Idiap Research Institute</p>
+  <h1 id="name" aria-label="Elija Vida"></h1>
+  <div class="tstep" id="tstep" aria-hidden="true"></div>
+  <p class="lede">I work on <em>spiking neural networks</em> and <em>diffusion models</em>:
+  speech recognition with spiking architectures, noise in neuron models as a resource for
+  learning, and dendritic computation. At the moment I am building spiking generative
+  models for speech.</p>
 
   <nav>
     <div class="group">
@@ -111,10 +126,11 @@
     </div>
   </nav>
 
-  <footer>© 2026 Elija Vida</footer>
+  <footer>&copy; 2026 Elija Vida</footer>
 </main>
 
 <script>
+  // ---- theme: system by default, toggle overrides, remembered ----
   const root = document.documentElement, btn = document.getElementById('themebtn');
   try {
     const saved = localStorage.getItem('theme');
@@ -126,6 +142,103 @@
     root.dataset.theme = dark ? 'light' : 'dark';
     try { localStorage.setItem('theme', root.dataset.theme); } catch (e) {}
   });
+
+  // ---- reverse diffusion of the name: pure noise -> signal ----
+  (() => {
+    const NAME = 'Elija Vida';
+    const GLYPHS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%&/\\|<>+=~^\u03a3\u039b\u039e\u03a8\u03a9\u2202\u2207';
+    const host = document.getElementById('name');
+    const tstep = document.getElementById('tstep');
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const DUR = 1750;
+
+    const cells = [...NAME].map(ch => {
+      const el = document.createElement('span');
+      el.className = 'ch';
+      el.textContent = ch;
+      host.appendChild(el);
+      return { el, ch, fixed: ch === ' ' };
+    });
+
+    if (reduced) return;
+
+    host.classList.add('replayable');
+    host.title = 'click to resample';
+
+    const rand = () => GLYPHS[(Math.random() * GLYPHS.length) | 0];
+    let raf = null, hideTimer = null;
+
+    function denoise() {
+      if (raf) cancelAnimationFrame(raf);
+      if (hideTimer) clearTimeout(hideTimer);
+
+      // fresh noise schedule: each character settles at its own step
+      const order = cells.map((_, i) => i).filter(i => !cells[i].fixed);
+      for (let i = order.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [order[i], order[j]] = [order[j], order[i]];
+      }
+      const settleAt = new Map();
+      order.forEach((idx, k) => settleAt.set(idx, 0.30 + 0.62 * (k / Math.max(1, order.length - 1))));
+
+      cells.forEach(c => {
+        if (c.fixed) return;
+        c.el.classList.remove('clean');
+        c.el.classList.add('noise');
+        c.el.textContent = rand();
+      });
+      tstep.classList.add('show');
+
+      let start = null, lastScramble = 0;
+      function frame(now) {
+        if (start === null) start = now;
+        const p = Math.min(1, (now - start) / DUR);
+        const t = 1 - p;                       // noise level, 1 -> 0
+        tstep.textContent = 't = ' + t.toFixed(2) + '   \u2193 denoising';
+
+        const interval = 34 + (1 - t) * 80;
+        const doScramble = now - lastScramble > interval;
+        if (doScramble) lastScramble = now;
+
+        cells.forEach((c, i) => {
+          if (c.fixed) return;
+          if (p >= settleAt.get(i)) {
+            if (c.el.textContent !== c.ch) {
+              c.el.textContent = c.ch;
+              c.el.classList.remove('noise');
+              c.el.classList.add('clean');
+            }
+          } else if (doScramble) {
+            c.el.textContent = rand();
+          }
+        });
+
+        if (p < 1) {
+          raf = requestAnimationFrame(frame);
+        } else {
+          raf = null;
+          cells.forEach(c => {
+            c.el.textContent = c.ch;
+            c.el.classList.remove('noise');
+            c.el.classList.add('clean');
+          });
+          tstep.textContent = 't = 0.00   \u2713 sample';
+          hideTimer = setTimeout(() => tstep.classList.remove('show'), 900);
+        }
+      }
+      raf = requestAnimationFrame(frame);
+    }
+
+    // click (or keyboard) the name to draw another sample
+    host.setAttribute('role', 'button');
+    host.setAttribute('tabindex', '0');
+    host.addEventListener('click', denoise);
+    host.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); denoise(); }
+    });
+
+    denoise();
+  })();
 </script>
 </body>
 </html>

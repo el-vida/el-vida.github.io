@@ -87,7 +87,7 @@
 
   @media print {
     body { margin: 0 auto; color: #000; background: #fff; }
-    .home, #themebtn { display: none; }
+    .home, #themebtn, #langbtn, #langmenu { display: none; }
     .entry { border-color: #ccc; background: #fff; padding: 0.4rem 0.7rem; }
     a { color: #000; }
   }
@@ -95,21 +95,21 @@
 </head>
 <body>
 <button id="themebtn" aria-label="Toggle color scheme">◐</button>
-<p class="home"><a href="./">&larr; home</a></p>
-<h1>Elija Vida</h1>
-<p class="role">PhD student, EPFL &amp; Idiap Research Institute</p>
+<p class="home"><a href="./" data-i18n="nav.home">&larr; home</a></p>
+<h1 id="name">Elija Vida</h1>
+<p class="role" data-i18n="role">PhD student, EPFL &amp; Idiap Research Institute</p>
 
-<h2>Research</h2>
-<p>I work on spiking neural networks for sequence processing. This includes
+<h2 data-i18n="h.research">Research</h2>
+<p data-i18n="research.body">I work on spiking neural networks for sequence processing. This includes
 speech recognition on LibriSpeech and TIMIT with spiking architectures, the
 role of noise in spiking neuron models, dendritic computation, and spiking
 generative models for speech.</p>
 
-<h2>Projects</h2>
+<h2 data-i18n="h.projects">Projects</h2>
 
 <div class="entry">
-  <h3>Spiking speech recognition</h3>
-  <p>End-to-end speech recognition with spiking encoders in SpeechBrain, on
+  <h3 data-i18n="proj.asr.t">Spiking speech recognition</h3>
+  <p data-i18n="proj.asr.d">End-to-end speech recognition with spiking encoders in SpeechBrain, on
   TIMIT and LibriSpeech. Hybrid architectures that combine spiking and
   non-spiking recurrent layers, evaluated over multiple seeds against
   published baselines, with analyses of recurrence stability and energy
@@ -117,8 +117,8 @@ generative models for speech.</p>
 </div>
 
 <div class="entry">
-  <h3>Noise as a resource in spiking neurons</h3>
-  <p>How stochastic firing interacts with learning: noisy neuron models
+  <h3 data-i18n="proj.noise.t">Noise as a resource in spiking neurons</h3>
+  <p data-i18n="proj.noise.d">How stochastic firing interacts with learning: noisy neuron models
   with the noise-driven learning rule, trainable noise scales, and the
   effect of noise schedules on accuracy and calibration on speech-command
   benchmarks. Includes an independent replication of the noisy spiking
@@ -126,111 +126,110 @@ generative models for speech.</p>
 </div>
 
 <div class="entry">
-  <h3>Dendritic processing units</h3>
-  <p>Spiking networks with dendritic branches and heterogeneous,
+  <h3 data-i18n="proj.dend.t">Dendritic processing units</h3>
+  <p data-i18n="proj.dend.d">Spiking networks with dendritic branches and heterogeneous,
   RRAM-realistic delays, applied to temporal benchmarks such as the Spiking
   Heidelberg Digits and biomedical time series. Started as my MSc thesis
-  (<a href="https://github.com/EIS-Hub/DenRAM">code</a>); now continued
+  (<a href="https://github.com/EIS-Hub/DenRAM" data-i18n="code">code</a>); now continued
   independently toward publication.</p>
 </div>
 
 <div class="entry">
-  <h3>Spiking generative models</h3>
-  <p>Diffusion and flow matching as a route to spiking speech synthesis,
+  <h3 data-i18n="proj.gen.t">Spiking generative models</h3>
+  <p data-i18n="proj.gen.d">Diffusion and flow matching as a route to spiking speech synthesis,
   beginning with image generation as a controlled testbed. Early stage;
   the topic of my PhD candidacy project.</p>
 </div>
 
-<h2>Education</h2>
+<h2 data-i18n="h.education">Education</h2>
 <div class="entry">
   <div class="head">
-    <h3>PhD, EPFL</h3>
-    <span class="when">ongoing</span>
+    <h3 data-i18n="edu.phd.t">PhD, EPFL</h3>
+    <span class="when" data-i18n="when.ongoing">ongoing</span>
   </div>
-  <p>Hosted at the Idiap Research Institute, Martigny.</p>
+  <p data-i18n="edu.phd.d">Hosted at the Idiap Research Institute, Martigny.</p>
 </div>
 <div class="entry">
   <div class="head">
-    <h3>MSc Computer Engineering, RWTH Aachen University</h3>
+    <h3 data-i18n="edu.msc.t">MSc Computer Engineering, RWTH Aachen University</h3>
     <span class="when">2020 &ndash; 2024</span>
   </div>
-  <p>Thesis at the Institute of Neuroinformatics, ETH Zurich, on dendritic
+  <p data-i18n="edu.msc.d">Thesis at the Institute of Neuroinformatics, ETH Zurich, on dendritic
   processing units in spiking neural networks. Semester abroad at UC
   Berkeley (2022).</p>
 </div>
 <div class="entry">
   <div class="head">
-    <h3>BSc Electrical Engineering &amp; Computer Engineering, RWTH Aachen
+    <h3 data-i18n="edu.bsc.t">BSc Electrical Engineering &amp; Computer Engineering, RWTH Aachen
     University</h3>
     <span class="when">2015 &ndash; 2020</span>
   </div>
-  <p>TIME double-degree exchange at &Eacute;cole Centrale de Lille
+  <p data-i18n="edu.bsc.d">TIME double-degree exchange at &Eacute;cole Centrale de Lille
   (2017 &ndash; 2019).</p>
 </div>
 
-<h2>Experience</h2>
+<h2 data-i18n="h.experience">Experience</h2>
 <div class="entry">
   <div class="head">
-    <h3>Research intern, ABB Corporate Research, Baden</h3>
+    <h3 data-i18n="exp.abb.t">Research intern, ABB Corporate Research, Baden</h3>
     <span class="when">2025 &ndash; 2026</span>
   </div>
-  <p>Machine learning for software engineering and verification.</p>
+  <p data-i18n="exp.abb.d">Machine learning for software engineering and verification.</p>
 </div>
 <div class="entry">
   <div class="head">
-    <h3>Freelance contributor, AI training &amp; evaluation</h3>
-    <span class="when">since 2024</span>
+    <h3 data-i18n="exp.free.t">Freelance contributor, AI training &amp; evaluation</h3>
+    <span class="when" data-i18n="when.since24">since 2024</span>
   </div>
-  <p>Code-focused evaluation and training of large language models.</p>
+  <p data-i18n="exp.free.d">Code-focused evaluation and training of large language models.</p>
 </div>
 <div class="entry">
   <div class="head">
-    <h3>Student assistant, Chair of Integrated Digital Systems, RWTH
+    <h3 data-i18n="exp.ids.t">Student assistant, Chair of Integrated Digital Systems, RWTH
     Aachen</h3>
     <span class="when">2023 &ndash; 2024</span>
   </div>
-  <p>Software engineering for the neuroAIx FPGA-cluster framework.</p>
+  <p data-i18n="exp.ids.d">Software engineering for the neuroAIx FPGA-cluster framework.</p>
 </div>
 <div class="entry">
   <div class="head">
-    <h3>Intern, Porsche AG, Stuttgart</h3>
+    <h3 data-i18n="exp.porsche.t">Intern, Porsche AG, Stuttgart</h3>
     <span class="when">2021 &ndash; 2022</span>
   </div>
-  <p>Business-intelligence tooling and predictive-maintenance prototyping
+  <p data-i18n="exp.porsche.d">Business-intelligence tooling and predictive-maintenance prototyping
   in production.</p>
 </div>
 <div class="entry">
   <div class="head">
-    <h3>Student research assistant, E.ON Energy Research Center, RWTH
+    <h3 data-i18n="exp.eon.t">Student research assistant, E.ON Energy Research Center, RWTH
     Aachen</h3>
     <span class="when">2020 &ndash; 2021</span>
   </div>
-  <p>Model predictive control for microgrid frequency stability.</p>
+  <p data-i18n="exp.eon.d">Model predictive control for microgrid frequency stability.</p>
 </div>
 <div class="entry">
   <div class="head">
-    <h3>Student research assistant, AIT Lab, ETH Zurich</h3>
+    <h3 data-i18n="exp.ait.t">Student research assistant, AIT Lab, ETH Zurich</h3>
     <span class="when">2020 &ndash; 2021</span>
   </div>
-  <p>Statistical analysis of large-scale keystroke dynamics.</p>
+  <p data-i18n="exp.ait.d">Statistical analysis of large-scale keystroke dynamics.</p>
 </div>
 <div class="entry">
   <div class="head">
-    <h3>Machine learning intern, CAT Telecom, Bangkok</h3>
+    <h3 data-i18n="exp.cat.t">Machine learning intern, CAT Telecom, Bangkok</h3>
     <span class="when">2019</span>
   </div>
-  <p>Computer vision for license-plate detection on embedded hardware.</p>
+  <p data-i18n="exp.cat.d">Computer vision for license-plate detection on embedded hardware.</p>
 </div>
 
-<h2>Publications</h2>
+<h2 data-i18n="h.publications">Publications</h2>
 <div class="entry">
   <div class="head">
     <h3><a href="https://dl.acm.org/doi/10.1145/3604276">Typing Behavior
     is About More than Speed: Users' Strategies for Choosing Word
     Suggestions Despite Slower Typing Rates</a></h3>
   </div>
-  <p class="when">Proceedings of the ACM on Human-Computer Interaction,
-  2023</p>
+  <p class="when" data-i18n="pub.acm.v">Proceedings of the ACM on Human-Computer Interaction, 2023</p>
 </div>
 <div class="entry">
   <div class="head">
@@ -238,25 +237,29 @@ generative models for speech.</p>
     Model Predictive Control for Transient Frequency Control in Islanded
     Inverter-Based Microgrids</a></h3>
   </div>
-  <p class="when">IEEE Transactions on Power Systems, 2023</p>
+  <p class="when" data-i18n="pub.ieee.v">IEEE Transactions on Power Systems, 2023</p>
 </div>
 
-<h2>Skills</h2>
+<h2 data-i18n="h.skills">Skills</h2>
 <div class="entry">
-  <p style="margin-top:0"><strong>Programming:</strong> Python, C++, C,
+  <p style="margin-top:0"><strong data-i18n="skills.prog">Programming</strong>: Python, C++, C,
   MATLAB, VHDL/Verilog &middot; PyTorch, JAX, TensorFlow</p>
-  <p><strong>Languages:</strong> German (native), English (C2), French
-  (C1)</p>
+  <p><strong data-i18n="skills.lang">Languages</strong>: <span data-i18n="skills.langv">German (native), English (C2), French (C1)</span></p>
 </div>
 
-<h2>Links</h2>
-<p><a href="https://github.com/el-vida">GitHub</a> &middot;
-<a href="talks/">Talk animations</a> &middot;
-<a href="demos/">Demos</a> &middot;
-<a href="fancy.html">Neural CV</a> &middot;
-<a href="editorial.html">Editorial CV</a></p>
+<h2 data-i18n="h.links">Links</h2>
+<p><a href="https://github.com/el-vida" data-i18n="nav.github">GitHub</a> &middot;
+<a href="talks/" data-i18n="nav.talks">Talk animations</a> &middot;
+<a href="demos/" data-i18n="nav.demos">Demos</a> &middot;
+<a href="fancy.html" data-i18n="nav.neural">Neural CV</a> &middot;
+<a href="editorial.html" data-i18n="nav.editorial">Editorial CV</a></p>
 
+<script src="i18n.js"></script>
+<script src="denoise.js"></script>
 <script>
+  I18N.init('body');
+  Denoise.attach(document.getElementById('name'), { text: 'Elija Vida' });
+
   const root = document.documentElement, btn = document.getElementById('themebtn');
   try {
     const saved = localStorage.getItem('theme');

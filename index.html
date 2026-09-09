@@ -58,6 +58,8 @@
   }
   #themebtn:hover { transform: rotate(20deg) scale(1.08); border-color: var(--accent); }
 
+
+
   main {
     min-height: 100vh; max-width: 40rem; margin: 0 auto; padding: 3rem 1.4rem;
     display: flex; flex-direction: column; justify-content: center;
@@ -68,12 +70,6 @@
     font-size: clamp(2.4rem, 6vw, 3.4rem); font-weight: 500; line-height: 1.05;
     letter-spacing: -0.02em; min-height: 1.05em;
   }
-  h1.replayable { cursor: pointer; }
-  h1.replayable:focus-visible { outline: 2px solid var(--accent); outline-offset: 6px; border-radius: 4px; }
-  h1 .ch { display: inline-block; white-space: pre; will-change: filter, opacity; }
-  h1 .ch.noise { color: var(--muted); opacity: 0.75; filter: blur(1.4px); }
-  h1 .ch.clean { color: var(--ink); opacity: 1; filter: none;
-    transition: color 0.5s ease, opacity 0.5s ease, filter 0.5s ease; }
 
   .tstep {
     font-family: var(--mono); font-size: 0.7rem; color: var(--muted);
@@ -94,42 +90,43 @@
 
   footer { margin-top: 2.2rem; color: var(--muted); font-size: 0.85rem; }
 
-  @media (prefers-reduced-motion: reduce) {
-    h1 .ch, h1 .ch.clean { filter: none; opacity: 1; transition: none; }
-  }
 </style>
 </head>
 <body>
 <button id="themebtn" aria-label="Toggle color scheme">&#9680;</button>
 
 <main>
-  <p class="kicker">PhD student &middot; EPFL &amp; Idiap Research Institute</p>
+  <p class="kicker" data-i18n="kicker">PhD student &middot; EPFL &amp; Idiap Research Institute</p>
   <h1 id="name" aria-label="Elija Vida"></h1>
   <div class="tstep" id="tstep" aria-hidden="true"></div>
-  <p class="lede">I work on <em>spiking neural networks</em> and <em>diffusion models</em>:
+  <p class="lede" data-i18n="index.lede">I work on <em>spiking neural networks</em> and <em>diffusion models</em>:
   speech recognition with spiking architectures, noise in neuron models as a resource for
   learning, and dendritic computation. At the moment I am building spiking generative
   models for speech.</p>
 
   <nav>
     <div class="group">
-      <span class="lab">CV</span>
-      <a href="resume.html">Resume</a>
-      <a href="fancy.html">Neural</a>
-      <a href="editorial.html">Editorial</a>
+      <span class="lab" data-i18n="lab.cv">CV</span>
+      <a href="resume.html" data-i18n="nav.resume">Resume</a>
+      <a href="fancy.html" data-i18n="nav.neural">Neural</a>
+      <a href="editorial.html" data-i18n="nav.editorial">Editorial</a>
     </div>
     <div class="group">
-      <span class="lab">Elsewhere</span>
+      <span class="lab" data-i18n="lab.elsewhere">Elsewhere</span>
       <a href="https://github.com/el-vida" target="_blank" rel="noopener">GitHub</a>
-      <a href="talks/">Talk animations</a>
-      <a href="demos/">Demos</a>
+      <a href="talks/" data-i18n="nav.talks">Talk animations</a>
+      <a href="demos/" data-i18n="nav.demos">Demos</a>
     </div>
   </nav>
 
   <footer>&copy; 2026 Elija Vida</footer>
 </main>
 
+<script src="i18n.js"></script>
+<script src="denoise.js"></script>
 <script>
+  I18N.init('body');
+
   // ---- theme: system by default, toggle overrides, remembered ----
   const root = document.documentElement, btn = document.getElementById('themebtn');
   try {
@@ -144,101 +141,10 @@
   });
 
   // ---- reverse diffusion of the name: pure noise -> signal ----
-  (() => {
-    const NAME = 'Elija Vida';
-    const GLYPHS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%&/\\|<>+=~^\u03a3\u039b\u039e\u03a8\u03a9\u2202\u2207';
-    const host = document.getElementById('name');
-    const tstep = document.getElementById('tstep');
-    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const DUR = 1750;
-
-    const cells = [...NAME].map(ch => {
-      const el = document.createElement('span');
-      el.className = 'ch';
-      el.textContent = ch;
-      host.appendChild(el);
-      return { el, ch, fixed: ch === ' ' };
-    });
-
-    if (reduced) return;
-
-    host.classList.add('replayable');
-    host.title = 'click to resample';
-
-    const rand = () => GLYPHS[(Math.random() * GLYPHS.length) | 0];
-    let raf = null, hideTimer = null;
-
-    function denoise() {
-      if (raf) cancelAnimationFrame(raf);
-      if (hideTimer) clearTimeout(hideTimer);
-
-      // fresh noise schedule: each character settles at its own step
-      const order = cells.map((_, i) => i).filter(i => !cells[i].fixed);
-      for (let i = order.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [order[i], order[j]] = [order[j], order[i]];
-      }
-      const settleAt = new Map();
-      order.forEach((idx, k) => settleAt.set(idx, 0.30 + 0.62 * (k / Math.max(1, order.length - 1))));
-
-      cells.forEach(c => {
-        if (c.fixed) return;
-        c.el.classList.remove('clean');
-        c.el.classList.add('noise');
-        c.el.textContent = rand();
-      });
-      tstep.classList.add('show');
-
-      let start = null, lastScramble = 0;
-      function frame(now) {
-        if (start === null) start = now;
-        const p = Math.min(1, (now - start) / DUR);
-        const t = 1 - p;                       // noise level, 1 -> 0
-        tstep.textContent = 't = ' + t.toFixed(2) + '   \u2193 denoising';
-
-        const interval = 34 + (1 - t) * 80;
-        const doScramble = now - lastScramble > interval;
-        if (doScramble) lastScramble = now;
-
-        cells.forEach((c, i) => {
-          if (c.fixed) return;
-          if (p >= settleAt.get(i)) {
-            if (c.el.textContent !== c.ch) {
-              c.el.textContent = c.ch;
-              c.el.classList.remove('noise');
-              c.el.classList.add('clean');
-            }
-          } else if (doScramble) {
-            c.el.textContent = rand();
-          }
-        });
-
-        if (p < 1) {
-          raf = requestAnimationFrame(frame);
-        } else {
-          raf = null;
-          cells.forEach(c => {
-            c.el.textContent = c.ch;
-            c.el.classList.remove('noise');
-            c.el.classList.add('clean');
-          });
-          tstep.textContent = 't = 0.00   \u2713 sample';
-          hideTimer = setTimeout(() => tstep.classList.remove('show'), 900);
-        }
-      }
-      raf = requestAnimationFrame(frame);
-    }
-
-    // click (or keyboard) the name to draw another sample
-    host.setAttribute('role', 'button');
-    host.setAttribute('tabindex', '0');
-    host.addEventListener('click', denoise);
-    host.addEventListener('keydown', e => {
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); denoise(); }
-    });
-
-    denoise();
-  })();
+  Denoise.attach(document.getElementById('name'), {
+    text: 'Elija Vida',
+    tstep: document.getElementById('tstep')
+  });
 </script>
 </body>
 </html>

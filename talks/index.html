@@ -183,7 +183,35 @@ topic to open it; each animation also exists as a slide deck for presenting
 </details>
 
 <details class="topic">
-<summary><h2>Speech recognition</h2><span class="count">5 animations</span></summary>
+<summary><h2>Speech and audio</h2><span class="count">7 animations</span></summary>
+
+<div class="anim">
+  <h2>From a waveform to a spectrogram</h2>
+  <p>What the Fourier transform actually does, and what a spectrogram column
+  really is. A pure tone is just a list of numbers, and nothing in that list
+  says "440 hertz", so the DFT asks the signal one question at a time:
+  multiply it by a probe wave and average. For the matching probe the product
+  never changes sign and the average survives at 0.500; for probes at 200 and
+  880&nbsp;Hz it cancels to 0.004 and 0.002. Doing that at every frequency is
+  the spectrum, and two added tones show up as two peaks whose heights are in
+  the ratio 2.08, the ratio they were mixed at. The FFT computes the same
+  answer with N log N multiplies instead of N&sup2;: 341&times; fewer at N =
+  4096, and a measured 940&times; faster in wall-clock here. Since speech
+  changes, the signal is cut into 25&nbsp;ms windows every 10&nbsp;ms and one
+  FFT is run per window; the resulting spectrum, stood on end, is one column
+  of the spectrogram, which is where the harmonic stripes and consonant
+  smears come from. The closing experiment is the uncertainty tradeoff, run
+  on two tones 100&nbsp;Hz apart: a 5&nbsp;ms window merges them into one
+  peak, a 50&nbsp;ms window resolves two.</p>
+  <video muted loop playsinline controls preload="metadata"
+         src="media/FourierSpectrogram.mp4"></video>
+  <p class="caption">
+    All correlations, peak ratios, timings and the window experiment are
+    computed in the scene; the spectrogram is the real TIMIT utterance.
+    <a href="FourierSpectrogram.html">Present as full-screen deck</a>
+    (advance with arrow keys).
+  </p>
+</div>
 
 <div class="anim">
   <h2>The Conformer, step by step</h2>
@@ -302,6 +330,40 @@ topic to open it; each animation also exists as a slide deck for presenting
     curves are the actual powers.
     <a href="LstmGating.html">Present as full-screen deck</a>
     (advance with arrow keys).
+  </p>
+</div>
+
+<div class="anim">
+  <h2>Griffin-Lim, and getting audio back from a spectrogram</h2>
+  <p>The inverse problem, which every speech synthesiser ends up facing. The
+  STFT produces complex numbers; a spectrogram keeps the magnitude and throws
+  the phase away, so a vocoder has to invent the missing half. Random phase
+  fails badly, 65% off the target magnitudes, because overlapping windows
+  have to agree with each other. Griffin-Lim bounces between the two things
+  we know, inverse STFT then STFT again, each time putting the target
+  magnitude back and keeping whatever phase came out. Measured on real
+  speech it goes from &minus;3.7&nbsp;dB to &minus;23.7&nbsp;dB over 100
+  iterations and then crawls, while the true phase would give
+  &minus;152&nbsp;dB: it is a local optimum, not the answer. The honest
+  result is the striking part: the reconstructed waveform correlates 0.015
+  with the original, essentially not at all, yet its spectrogram is
+  indistinguishable, which is exactly why Griffin-Lim sounds metallic. On mel
+  spectrograms it is worse still, since 80 bands from 257 bins is not
+  invertible and the pseudo-inverse costs 15.8% error before the iterations
+  even start, which is the setting of the
+  <a href="../demos/spiking-digit-jukebox/">Spiking Digit Jukebox</a>. The
+  last slide places the alternatives: phase-gradient integration, WaveNet and
+  HiFi-GAN, and the diffusion vocoders that reuse the denoiser from the
+  diffusion animations.</p>
+  <video muted loop playsinline controls preload="metadata"
+         src="media/GriffinLim.mp4"></video>
+  <p class="caption">
+    Convergence, the random-phase baseline, the waveform correlation and the
+    mel pseudo-inverse error are all measured on the real utterance.
+    <a href="GriffinLim.html">Present as full-screen deck</a>
+    (advance with arrow keys) &middot;
+    <a href="../demos/spiking-digit-jukebox/">listen: Spiking Digit
+    Jukebox</a>.
   </p>
 </div>
 

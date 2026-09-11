@@ -63,7 +63,26 @@
     font-size: 0.85rem;
     margin-left: 0.6rem;
   }
-  .anim { margin: 2.2rem 0 2.8rem; }
+  details.anim {
+    margin: 0.4rem 0;
+    border-top: 1px solid var(--rule);
+    padding: 0.45rem 0 0.1rem;
+  }
+  details.anim > summary {
+    cursor: pointer;
+    list-style-position: outside;
+    padding: 0.15rem 0;
+  }
+  details.anim > summary h3 {
+    display: inline;
+    font-size: 1.02rem;
+    font-weight: normal;
+    margin: 0;
+  }
+  details.anim > summary:hover h3 { color: var(--link); }
+  details.anim[open] > summary h3 { font-weight: bold; }
+  details.anim > p { margin-top: 0.7rem; }
+  details.anim > video { margin-top: 0.5rem; }
   .anim video {
     width: 100%;
     display: block;
@@ -97,14 +116,14 @@
 <p><a href="../">&larr; home</a></p>
 <h1>Animations</h1>
 <p>Concept animations for talks, made with Manim, grouped by topic. Click a
-topic to open it; each animation also exists as a slide deck for presenting
-(linked below its video).</p>
+topic to list what is in it, then click an animation to play it; each one also
+exists as a slide deck for presenting (linked below its video).</p>
 
 <details class="topic" open>
 <summary><h2>Spiking neural networks</h2><span class="count">4 animations</span></summary>
 
-<div class="anim">
-  <h2>AdLIF: a LIF neuron with a brake</h2>
+<details class="anim">
+<summary><h3>AdLIF: a LIF neuron with a brake</h3></summary>
   <p>The adaptive LIF neuron adds one slow variable w that acts as a brake:
   every output spike charges it, it leaks slowly, and it subtracts from the
   drive. Three consequences, each shown against a plain LIF under identical
@@ -123,10 +142,10 @@ topic to open it; each animation also exists as a slide deck for presenting
     <a href="AdLIFDynamics.html">Present as full-screen deck</a>
     (advance with arrow keys).
   </p>
-</div>
+</details>
 
-<div class="anim">
-  <h2>Where noise enters a spiking neuron</h2>
+<details class="anim">
+<summary><h3>Where noise enters a spiking neuron</h3></summary>
   <p>Three places to inject noise into the same LIF neuron, and three
   different behaviors. Input noise rides in with the features and is
   filtered by the synapse and membrane. Membrane noise enters the state
@@ -142,10 +161,10 @@ topic to open it; each animation also exists as a slide deck for presenting
     <a href="NoiseLoci.html">Present as full-screen deck</a>
     (advance with arrow keys).
   </p>
-</div>
+</details>
 
-<div class="anim">
-  <h2>Noisy vs deterministic spiking neurons</h2>
+<details class="anim">
+<summary><h3>Noisy vs deterministic spiking neurons</h3></summary>
   <p>Why the surrogate gradient is not a hack. The opening feeds the same
   input and membrane trace to both neurons: the deterministic one spikes
   identically on every trial, the escape-noise one differently each time,
@@ -163,10 +182,10 @@ topic to open it; each animation also exists as a slide deck for presenting
     <a href="NoisyVsDeterministic.html">Present as full-screen deck</a>
     (advance with arrow keys).
   </p>
-</div>
+</details>
 
-<div class="anim">
-  <h2>LIF neuron dynamics</h2>
+<details class="anim">
+<summary><h3>LIF neuron dynamics</h3></summary>
   <p>A leaky integrate-and-fire neuron driven by a random input spike train:
   the membrane potential integrates each incoming spike, leaks between them,
   and emits an output spike with a reset whenever it reaches the threshold.</p>
@@ -178,15 +197,15 @@ topic to open it; each animation also exists as a slide deck for presenting
     <a href="LIFDynamics.html">Present as full-screen deck</a>
     (advance with arrow keys).
   </p>
-</div>
+</details>
 
 </details>
 
 <details class="topic">
 <summary><h2>Speech and audio</h2><span class="count">6 animations</span></summary>
 
-<div class="anim">
-  <h2>From a waveform to a spectrogram</h2>
+<details class="anim">
+<summary><h3>From a waveform to a spectrogram</h3></summary>
   <p>What the Fourier transform actually does, and what a spectrogram column
   really is. A pure tone is just a list of numbers, and nothing in that list
   says "440 hertz", so the DFT asks the signal one question at a time:
@@ -211,10 +230,10 @@ topic to open it; each animation also exists as a slide deck for presenting
     <a href="FourierSpectrogram.html">Present as full-screen deck</a>
     (advance with arrow keys).
   </p>
-</div>
+</details>
 
-<div class="anim">
-  <h2>The Conformer, step by step</h2>
+<details class="anim">
+<summary><h3>The Conformer, step by step</h3></summary>
   <p>The standard speech encoder since Gulati et al. (2020), built up on
   real TIMIT features. Convolutional subsampling shrinks time by four, then
   a stack of "macaron" blocks: two half-step feed-forward shells around a
@@ -234,10 +253,10 @@ topic to open it; each animation also exists as a slide deck for presenting
     <a href="ConformerArch.html">Present as full-screen deck</a>
     (advance with arrow keys).
   </p>
-</div>
+</details>
 
-<div class="anim">
-  <h2>The ASR pipeline</h2>
+<details class="anim">
+<summary><h3>The ASR pipeline</h3></summary>
   <p>From sound to text on a real utterance: TIMIT's SA1 sentence. The raw
   16&nbsp;kHz waveform is cut into 25&nbsp;ms windows with a 10&nbsp;ms hop;
   a cursor sweeps the signal while the actual 80-band log-mel spectrogram
@@ -252,10 +271,10 @@ topic to open it; each animation also exists as a slide deck for presenting
     <a href="ASRPipeline.html">Present as full-screen deck</a>
     (advance with arrow keys).
   </p>
-</div>
+</details>
 
-<div class="anim">
-  <h2>Convolution as feature extraction</h2>
+<details class="anim">
+<summary><h3>Convolution as feature extraction</h3></summary>
   <p>Why CNNs are the standard audio front end, on real TIMIT audio. A
   15-tap kernel slides along the waveform while its response builds below:
   convolution is one small dot product repeated at every position,
@@ -276,10 +295,10 @@ topic to open it; each animation also exists as a slide deck for presenting
     <a href="CnnFeatures.html">Present as full-screen deck</a>
     (advance with arrow keys).
   </p>
-</div>
+</details>
 
-<div class="anim">
-  <h2>CTC: the rule, then a trained model's own output</h2>
+<details class="anim">
+<summary><h3>CTC: the rule, then a trained model's own output</h3></summary>
   <p>How CTC turns per-frame predictions into a transcript without knowing
   the alignment. One alignment of ten frames collapses by the two rules
   (merge repeats, then drop the blank &empty;); many alignments give the
@@ -306,10 +325,10 @@ topic to open it; each animation also exists as a slide deck for presenting
     <a href="CTCAlignment.html">Present as full-screen deck</a>
     (advance with arrow keys).
   </p>
-</div>
+</details>
 
-<div class="anim">
-  <h2>Griffin-Lim, and getting audio back from a spectrogram</h2>
+<details class="anim">
+<summary><h3>Griffin-Lim, and getting audio back from a spectrogram</h3></summary>
   <p>The inverse problem, which every speech synthesiser ends up facing. The
   STFT produces complex numbers; a spectrogram keeps the magnitude and throws
   the phase away, so a vocoder has to invent the missing half. Random phase
@@ -340,15 +359,15 @@ topic to open it; each animation also exists as a slide deck for presenting
     <a href="../demos/spiking-digit-jukebox/">listen: Spiking Digit
     Jukebox</a>.
   </p>
-</div>
+</details>
 
 </details>
 
 <details class="topic">
 <summary><h2>Attention and sequence models</h2><span class="count">4 animations</span></summary>
 
-<div class="anim">
-  <h2>An LSTM cell, step by step</h2>
+<details class="anim">
+<summary><h3>An LSTM cell, step by step</h3></summary>
   <p>One cell, one memory number, three gates, on a task small enough to
   check by hand: read <code>5 a b c 9 d e ?</code> and say the last number
   when asked. A single scalar cell with hand-set weights solves it, and every
@@ -372,10 +391,10 @@ topic to open it; each animation also exists as a slide deck for presenting
     <a href="LstmStepwise.html">Present as full-screen deck</a>
     (advance with arrow keys).
   </p>
-</div>
+</details>
 
-<div class="anim">
-  <h2>LSTM gating and long contexts</h2>
+<details class="anim">
+<summary><h3>LSTM gating and long contexts</h3></summary>
   <p>Why plain recurrence forgets and gates remember. Gradients through an
   RNN are products of step-to-step Jacobians, and on a log axis powers are
   straight lines: 0.9<sup>60</sup> = 0.002 dies, 1.1<sup>60</sup> = 304
@@ -397,10 +416,10 @@ topic to open it; each animation also exists as a slide deck for presenting
     <a href="LstmGating.html">Present as full-screen deck</a>
     (advance with arrow keys).
   </p>
-</div>
+</details>
 
-<div class="anim">
-  <h2>Attention, step by step</h2>
+<details class="anim">
+<summary><h3>Attention, step by step</h3></summary>
   <p>Queries, keys and values on an example small enough to check by hand:
   five tokens, four readable embedding axes (animate, liquid, action,
   determiner), and hand-set projection matrices, so every score and weight
@@ -422,10 +441,10 @@ topic to open it; each animation also exists as a slide deck for presenting
     <a href="AttentionQkv.html">Present as full-screen deck</a>
     (advance with arrow keys).
   </p>
-</div>
+</details>
 
-<div class="anim">
-  <h2>BERT, GPT, and what the mask decides</h2>
+<details class="anim">
+<summary><h3>BERT, GPT, and what the mask decides</h3></summary>
   <p>The same attention three times over, separated only by which entries of
   the mask are allowed. BERT lets every token see every other one and trains
   by hiding about 15% of them, so <code>your</code> is rebuilt from
@@ -446,15 +465,15 @@ topic to open it; each animation also exists as a slide deck for presenting
     <a href="BertFlavors.html">Present as full-screen deck</a>
     (advance with arrow keys).
   </p>
-</div>
+</details>
 
 </details>
 
 <details class="topic">
 <summary><h2>Generative models and inference</h2><span class="count">11 animations</span></summary>
 
-<div class="anim">
-  <h2>What "intractable" means</h2>
+<details class="anim">
+<summary><h3>What "intractable" means</h3></summary>
   <p>The evidence integral in one dimension falls to twenty Riemann
   rectangles. In d dimensions the same grid costs 20<sup>d</sup>
   evaluations, a straight line on a log axis that crosses the number of
@@ -472,10 +491,10 @@ topic to open it; each animation also exists as a slide deck for presenting
     <a href="Intractability.html">Present as full-screen deck</a>
     (advance with arrow keys).
   </p>
-</div>
+</details>
 
-<div class="anim">
-  <h2>MAP estimation on a coin</h2>
+<details class="anim">
+<summary><h3>MAP estimation on a coin</h3></summary>
   <p>Three flips, three heads: maximum likelihood concludes the coin always
   lands heads. Multiplying in a near-fair Beta prior and taking the new
   peak gives the MAP estimate, a sane 0.64. Then the trap: two posteriors
@@ -491,10 +510,10 @@ topic to open it; each animation also exists as a slide deck for presenting
     <a href="MAPEstimate.html">Present as full-screen deck</a>
     (advance with arrow keys).
   </p>
-</div>
+</details>
 
-<div class="anim">
-  <h2>KL divergence</h2>
+<details class="anim">
+<summary><h3>KL divergence</h3></summary>
   <p>The price of believing q when p is true. A live readout shows the KL
   growing nonlinearly as q slides away from p; the number is then unpacked
   as a weighted sum, green-minus-blue signed area of
@@ -511,10 +530,10 @@ topic to open it; each animation also exists as a slide deck for presenting
     <a href="KLDivergence.html">Present as full-screen deck</a>
     (advance with arrow keys).
   </p>
-</div>
+</details>
 
-<div class="anim">
-  <h2>Variational inference and the ELBO</h2>
+<details class="anim">
+<summary><h3>Variational inference and the ELBO</h3></summary>
   <p>Why the posterior is out of reach (the evidence integral), and what to
   do about it. On a bimodal 1D posterior, the deterministic classics come
   first: MAP is a single point, and Laplace wraps a Gaussian around that
@@ -535,10 +554,10 @@ topic to open it; each animation also exists as a slide deck for presenting
     <a href="VariationalInference.html">Present as full-screen deck</a>
     (advance with arrow keys).
   </p>
-</div>
+</details>
 
-<div class="anim">
-  <h2>DDPM on MNIST and spoken digits</h2>
+<details class="anim">
+<summary><h3>DDPM on MNIST and spoken digits</h3></summary>
   <p>The two halves of a denoising diffusion model, on real data twice
   over. First on MNIST: the forward process corrupts a digit with Gaussian
   noise step by step, every frame an exact sample of the closed-form
@@ -564,10 +583,10 @@ topic to open it; each animation also exists as a slide deck for presenting
     <a href="../demos/spiking-digit-jukebox/">listen: Spiking Digit
     Jukebox</a>.
   </p>
-</div>
+</details>
 
-<div class="anim">
-  <h2>DDPM vs DDIM: one model, two samplers</h2>
+<details class="anim">
+<summary><h3>DDPM vs DDIM: one model, two samplers</h3></summary>
   <p>After training, a diffusion model is one function, the noise
   predictor; sampling is how you use it. On the same two-Gaussian toy as
   the flow-matching scene the score is closed form, so both samplers run
@@ -592,10 +611,10 @@ topic to open it; each animation also exists as a slide deck for presenting
     <a href="DdpmVsDdim.html">Present as full-screen deck</a>
     (advance with arrow keys).
   </p>
-</div>
+</details>
 
-<div class="anim">
-  <h2>Predicting noise, or predicting v</h2>
+<details class="anim">
+<summary><h3>Predicting noise, or predicting v</h3></summary>
   <p>After the schedule is fixed there is still a choice: the network can be
   asked for the noise &epsilon;, for the clean image x&#8320;, or for
   v = &radic;&#x3B1;&#772;&nbsp;&epsilon; &minus;
@@ -618,10 +637,10 @@ topic to open it; each animation also exists as a slide deck for presenting
     <a href="VvsEpsilon.html">Present as full-screen deck</a>
     (advance with arrow keys).
   </p>
-</div>
+</details>
 
-<div class="anim">
-  <h2>Stable Diffusion, and how it relates to DDPM</h2>
+<details class="anim">
+<summary><h3>Stable Diffusion, and how it relates to DDPM</h3></summary>
   <p>Latent diffusion in four moves. First the bill: 512&times;512&times;3 is
   786,432 numbers per denoising step, and attention over pixels would compare
   262,144 positions, 69 billion pairs. Then the observation, shown as a real
@@ -642,10 +661,10 @@ topic to open it; each animation also exists as a slide deck for presenting
     <a href="StableDiffusion.html">Present as full-screen deck</a>
     (advance with arrow keys).
   </p>
-</div>
+</details>
 
-<div class="anim">
-  <h2>Flow matching vs diffusion</h2>
+<details class="anim">
+<summary><h3>Flow matching vs diffusion</h3></summary>
   <p>Generation as transport: carry noise samples to the data. Diffusion
   does it with a stochastic walk; here the data is a two-Gaussian mixture,
   whose diffused score is closed form, so the wiggly reverse-SDE
@@ -665,10 +684,10 @@ topic to open it; each animation also exists as a slide deck for presenting
     <a href="FlowMatching.html">Present as full-screen deck</a>
     (advance with arrow keys).
   </p>
-</div>
+</details>
 
-<div class="anim">
-  <h2>Discrete vs continuous diffusion</h2>
+<details class="anim">
+<summary><h3>Discrete vs continuous diffusion</h3></summary>
   <p>One pixel against one letter. A continuous state is corrupted by tiny
   Gaussian nudges (the exact DDPM forward chain, plotted for a single
   coordinate); a discrete token moves by sudden Markov jumps through a
@@ -684,10 +703,10 @@ topic to open it; each animation also exists as a slide deck for presenting
     <a href="DiscreteVsContinuous.html">Present as full-screen deck</a>
     (advance with arrow keys).
   </p>
-</div>
+</details>
 
-<div class="anim">
-  <h2>Diffusion language models: uniform vs masked</h2>
+<details class="anim">
+<summary><h3>Diffusion language models: uniform vs masked</h3></summary>
   <p>Two ways to gradually destroy a sentence, run on five real tokens.
   Uniform corruption lets any token become any word, again and again;
   masked (absorbing) corruption only removes: once a token becomes [MASK]
@@ -705,15 +724,15 @@ topic to open it; each animation also exists as a slide deck for presenting
     <a href="DiffusionLM.html">Present as full-screen deck</a>
     (advance with arrow keys).
   </p>
-</div>
+</details>
 
 </details>
 
 <details class="topic">
 <summary><h2>Stochastic processes</h2><span class="count">4 animations</span></summary>
 
-<div class="anim">
-  <h2>Ito's lemma: why stochastic calculus adds a term</h2>
+<details class="anim">
+<summary><h3>Ito's lemma: why stochastic calculus adds a term</h3></summary>
   <p>Ordinary calculus works because a smooth curve becomes a straight line
   when you zoom in. Brownian motion never straightens: zoom into a real path
   and it looks the same, and the two sums measured along it explain why. The
@@ -733,10 +752,10 @@ topic to open it; each animation also exists as a slide deck for presenting
     <a href="ItoLemma.html">Present as full-screen deck</a>
     (advance with arrow keys).
   </p>
-</div>
+</details>
 
-<div class="anim">
-  <h2>The Ornstein-Uhlenbeck process</h2>
+<details class="anim">
+<summary><h3>The Ornstein-Uhlenbeck process</h3></summary>
   <p>Brownian motion with a spring attached, and the process that quietly
   underlies both halves of this page. One particle first: the mean relaxes as
   x&#8320;e<sup>&minus;&theta;t</sup> with a half-life of 0.46 s, simulated
@@ -755,10 +774,10 @@ topic to open it; each animation also exists as a slide deck for presenting
     <a href="OrnsteinUhlenbeck.html">Present as full-screen deck</a>
     (advance with arrow keys).
   </p>
-</div>
+</details>
 
-<div class="anim">
-  <h2>Langevin dynamics: noise turns optimisation into sampling</h2>
+<details class="anim">
+<summary><h3>Langevin dynamics: noise turns optimisation into sampling</h3></summary>
   <p>How to draw samples from a distribution when all you have is the slope
   of its log-density, which is exactly the situation a diffusion model is in.
   Following the slope alone collapses 220 particles onto 2 points, the modes:
@@ -777,10 +796,10 @@ topic to open it; each animation also exists as a slide deck for presenting
     <a href="LangevinDynamics.html">Present as full-screen deck</a>
     (advance with arrow keys).
   </p>
-</div>
+</details>
 
-<div class="anim">
-  <h2>The Schrodinger bridge</h2>
+<details class="anim">
+<summary><h3>The Schrodinger bridge</h3></summary>
   <p>Given where a cloud of particles starts and where it ends up, what did
   it most likely do in between? Plain diffusion is the right physics with the
   wrong ending: run it forward and 0.91 of the mass lands in the wrong place.
@@ -802,7 +821,7 @@ topic to open it; each animation also exists as a slide deck for presenting
     <a href="SchrodingerBridge.html">Present as full-screen deck</a>
     (advance with arrow keys).
   </p>
-</div>
+</details>
 
 </details>
 
@@ -847,15 +866,19 @@ topic to open it; each animation also exists as a slide deck for presenting
     paint();
   })();
 
-  document.querySelectorAll("details.topic").forEach(function (d) {
-    function sync() {
-      d.querySelectorAll("video").forEach(function (v) {
-        if (d.open) { v.play().catch(function () {}); } else { v.pause(); }
+  function syncVideos() {
+    document.querySelectorAll("details.anim").forEach(function (a) {
+      var topic = a.closest("details.topic");
+      var showing = a.open && (!topic || topic.open);
+      a.querySelectorAll("video").forEach(function (v) {
+        if (showing) { v.play().catch(function () {}); } else { v.pause(); }
       });
-    }
-    d.addEventListener("toggle", sync);
-    sync();
+    });
+  }
+  document.querySelectorAll("details.topic, details.anim").forEach(function (d) {
+    d.addEventListener("toggle", syncVideos);
   });
+  syncVideos();
 </script>
 </body>
 </html>

@@ -364,7 +364,7 @@ exists as a slide deck for presenting (linked below its video).</p>
 </details>
 
 <details class="topic">
-<summary><h2>Attention and sequence models</h2><span class="count">4 animations</span></summary>
+<summary><h2>Attention and sequence models</h2><span class="count">5 animations</span></summary>
 
 <details class="anim">
 <summary><h3>An LSTM cell, step by step</h3></summary>
@@ -414,6 +414,43 @@ exists as a slide deck for presenting (linked below its video).</p>
     Orange: the fading plain RNN. Purple: the gated cell state. All decay
     curves are the actual powers.
     <a href="LstmGating.html">Present as full-screen deck</a>
+    (advance with arrow keys).
+  </p>
+</details>
+
+<details class="anim">
+<summary><h3>The light GRU, and what one gate is enough for</h3></summary>
+  <p>The liGRU is a GRU with things deliberately removed, for speech. The
+  reset gate is gone, tanh becomes ReLU, batch normalisation is applied to
+  the input term only, and the biases disappear because the shift inside the
+  normalisation already does their job. What remains is a single dial,
+  h<sub>t</sub> = z&middot;h<sub>t-1</sub> + (1&minus;z)&middot;h&#771;, one
+  number per unit per frame that interpolates between keeping the state and
+  replacing it. At D = 80 inputs and H = 550 units that is 694,100 weights
+  against the GRU's 1,041,150 and the LSTM's 1,388,200.</p>
+  <p>A one-unit liGRU with hand-set weights runs the same errand as the LSTM
+  animation above, on the same sequence: it stores 0.497, holds it through
+  three distractors losing 2.0%, and overwrites with 0.897, all with one
+  gate instead of three. Because the candidate is ReLU rather than tanh, the
+  state holds the value itself rather than a squashed copy. What it gives up
+  is the ability to stay quiet: with no output gate the value is on show from
+  the moment it is stored, which for speech costs nothing since every frame
+  feeds the next layer anyway.</p>
+  <p>The gate earns its keep on real speech. Over 307 frames of the TIMIT
+  sentence with 64 units, an orthogonal recurrent matrix and nothing trained,
+  turning only the gate moves the gradient that survives back to the first
+  frame from 2.1e&minus;32 at z = 0.5 to 0.87 at z = 0.999, against
+  7.4e&minus;52 for an ungated tanh recurrence wearing the same matrix. The
+  closing slides give the published reasons for each deletion and what they
+  bought, with every figure attributed to Ravanelli et al. (2018).</p>
+  <video muted loop playsinline controls preload="metadata"
+         src="media/LiGRU.mp4"></video>
+  <p class="caption">
+    Purple: the state and the cell. Red: keeping. Green: writing. Yellow: the
+    measured gradient dial. Simulations are computed in the scene with nothing
+    trained; benchmark numbers are quoted from Ravanelli et al. (2018) with
+    the table cited on the slide.
+    <a href="LiGRU.html">Present as full-screen deck</a>
     (advance with arrow keys).
   </p>
 </details>

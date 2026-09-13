@@ -544,7 +544,47 @@ exists as a slide deck for presenting (linked below its video).</p>
 </details>
 
 <details class="topic">
-<summary><h2>Generative models and inference</h2><span class="count">11 animations</span></summary>
+<summary><h2>Generative models and inference</h2><span class="count">12 animations</span></summary>
+
+<details class="anim">
+<summary><h3>Why running diffusion backwards is allowed</h3></summary>
+  <p>The forward process destroys information, so undoing it looks like it
+  should be impossible, and the reverse step cannot even be a function: many
+  clean samples produce the same noisy one, so the answer is a distribution
+  straddling both modes. Four results turn that from magic into arithmetic,
+  and each is checked numerically here on a bimodal distribution whose
+  marginals and score are closed form.</p>
+  <p>Bayes writes the reverse kernel down at once, q(x<sub>t-1</sub>|x<sub>t</sub>)
+  proportional to the known forward Gaussian times the unknown marginal.
+  Feller's result, the one Sohl-Dickstein et al. (2015) lean on, says that for
+  a small enough step that product is itself Gaussian: measured here, the
+  distance from the best Gaussian fit falls from 1.5e&minus;1 at
+  &beta;&nbsp;=&nbsp;0.6, where the true reverse visibly has two humps, to
+  1.6e&minus;9 at &beta;&nbsp;=&nbsp;0.005. Tweedie's formula then fixes that
+  Gaussian's mean: the score gives the posterior mean of the clean sample, and
+  the check agrees to machine precision (gaps of 0 to 2e&minus;16), which is
+  why a denoiser and a score model are one object rather than two.</p>
+  <p>The third result is the one that makes training possible. The objective
+  you want needs the marginal score, an integral over the whole dataset; the
+  objective you can run just regresses the noise you drew yourself. They
+  differ by a constant and share a minimiser (Vincent, 2011), and averaging
+  the per-example target over 4 million samples reproduces the true marginal
+  score within 1.6 standard errors. Anderson (1982) supplies the continuous
+  statement, that a reversed diffusion is a diffusion whose drift is corrected
+  by exactly that score. Put together and run with the exact score, 400 steps
+  carry pure noise to the data distribution at a total variation distance of
+  0.011, with no network and no training: the approximation in practice lives
+  in the learned score and the finite step, not in the reversal itself.</p>
+  <video muted loop playsinline controls preload="metadata"
+         src="media/WhyReverseWorks.mp4"></video>
+  <p class="caption">
+    Green: the true data distribution and exact checks. Yellow: measured
+    quantities. Red: what is genuinely approximate. Every number is computed
+    in the scene.
+    <a href="WhyReverseWorks.html">Present as full-screen deck</a>
+    (advance with arrow keys).
+  </p>
+</details>
 
 <details class="anim">
 <summary><h3>What "intractable" means</h3></summary>

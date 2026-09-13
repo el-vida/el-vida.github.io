@@ -202,7 +202,44 @@ exists as a slide deck for presenting (linked below its video).</p>
 </details>
 
 <details class="topic">
-<summary><h2>Speech and audio</h2><span class="count">6 animations</span></summary>
+<summary><h2>Speech and audio</h2><span class="count">7 animations</span></summary>
+
+<details class="anim">
+<summary><h3>Mel, and mel cepstra, starting from the ear</h3></summary>
+  <p>Why speech features look the way they do, built one step at a time from
+  the organ that motivated them. The cochlea is a coiled strip on which every
+  point answers to one frequency, and uncoiling it gives a frequency axis made
+  of tissue: 100&nbsp;Hz lands 8% along it, 1&nbsp;kHz at 40%, 4&nbsp;kHz at
+  67%, so nearly half the length is spent below a kilohertz.</p>
+  <p>The mel scale was measured a different way entirely, by asking listeners
+  to halve and double pitches (Stevens, Volkmann and Newman, 1937). The same
+  100&nbsp;Hz step is worth 133 mel at 100&nbsp;Hz but only 20 mel at
+  5&nbsp;kHz, a factor of seven. Plotted against Greenwood's anatomical place
+  map, the psychophysical scale and the cochlea agree to r = 0.997 across the
+  speech band and never differ by more than 8.5% of the cochlea's length: two
+  experiments eighty years apart describing one curve.</p>
+  <p>From there the recipe follows. Space 40 triangular filters equally in
+  mel and they crowd at the bottom, the lowest 92&nbsp;Hz wide and the highest
+  1006&nbsp;Hz, an eleven-fold spread; each sums the energy beneath it, so 257
+  numbers become 40. Take the logarithm, because the energies span 40&nbsp;dB
+  and because loudness is a matter of ratios. Then the cepstrum: the ripple in
+  a log spectrum is the pitch harmonics, and a ripple has its own frequency,
+  so it collapses to a single spike, here at 6.10&nbsp;ms, which is a pitch of
+  164&nbsp;Hz. Cutting above the thirteenth coefficient discards the pitch and
+  keeps the formants. The closing slide says why that cosine transform existed
+  (it halves the average cross-correlation, 0.49 to 0.23, which a
+  diagonal-covariance Gaussian mixture needed) and why neural networks are fed
+  log-mel instead.</p>
+  <video muted loop playsinline controls preload="metadata"
+         src="media/MelCepstrum.mp4"></video>
+  <p class="caption">
+    Blue to red along the cochlea: low to high frequency. Every figure is
+    computed in the scene, on the same real TIMIT utterance as the other
+    speech animations.
+    <a href="MelCepstrum.html">Present as full-screen deck</a>
+    (advance with arrow keys).
+  </p>
+</details>
 
 <details class="anim">
 <summary><h3>From a waveform to a spectrogram</h3></summary>

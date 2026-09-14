@@ -843,6 +843,72 @@ exists as a slide deck for presenting (linked below its video).</p>
 </details>
 
 <details class="topic">
+<summary><h2>Statistics and hypothesis testing</h2><span class="count">2 animations</span></summary>
+
+<details class="anim">
+<summary><h3>Welch's t-test, per neuron</h3></summary>
+  <p>Twelve numbers and one question: did the neuron respond? Five baseline
+  trials averaging 13.00&nbsp;Hz with a spread of 1.58, seven stimulus trials
+  averaging 22.29 with a spread of 5.06. The difference of 9.29&nbsp;Hz means
+  nothing until it is scaled by the noise, so the scene builds the standard
+  error one term at a time, s&sup2;/n of 0.500 and 3.653 giving 2.038, and
+  t&nbsp;=&nbsp;4.556. The degrees of freedom come out fractional,
+  &nu;&nbsp;=&nbsp;7.54 rather than the 10 a pooled test would assume, because
+  unequal spreads genuinely cost information. Both tails give
+  p&nbsp;=&nbsp;0.0022.</p>
+  <p>The closing argument for using Welch rather than Student is measured
+  rather than asserted. Across 60,000 experiments where the two conditions are
+  truly identical, so every rejection is an error, the pooled test rejects
+  25.4% of the time when the smaller group is the more variable one and 0.4%
+  when it is the less variable one, against a truth of 5%. Welch holds 5.2%
+  and 5.0%. Pooling invents significance in one direction and hides it in the
+  other. The last slide runs the test on six neurons and walks into the next
+  problem: with six tests the threshold becomes 0.0083, and nothing survives
+  alone.</p>
+  <video muted loop playsinline controls preload="metadata"
+         src="media/WelchTest.mp4"></video>
+  <p class="caption">
+    Blue: baseline. Orange: stimulus. Red: the pooled test's error rates.
+    Every quantity is computed in the scene and cross-checked against scipy.
+    <a href="WelchTest.html">Present as full-screen deck</a>
+    (advance with arrow keys).
+  </p>
+</details>
+
+<details class="anim">
+<summary><h3>Fisher's method: combining weak p-values</h3></summary>
+  <p>Picking up the six neurons from the Welch animation, where the best
+  p-value was 0.0205 against a Bonferroni threshold of 0.0083, so by the usual
+  rules the answer is nothing. Fisher's move is to stop looking at p and look
+  at &minus;2&nbsp;ln&nbsp;p, which turns a convincing result into a large
+  contribution and a null result into almost none, and which under the null
+  is exactly &chi;&sup2; with two degrees of freedom because p is uniform.
+  Summing across the six gives X&nbsp;=&nbsp;24.30 on 12 degrees of freedom
+  and a combined p&nbsp;=&nbsp;0.0185: no neuron came close on its own, yet
+  together they clear 0.05 comfortably.</p>
+  <p>The &chi;&sup2; claim is then checked rather than trusted. Two hundred
+  thousand sets of six uniform p-values give a mean of 11.99 against the
+  predicted 12, a variance of 23.94 against 24, a tail fraction matching the
+  formula to four decimals, and a Kolmogorov-Smirnov p of 0.68. The intuition
+  slide shows four independent tests at an unremarkable p&nbsp;=&nbsp;0.10
+  combining to 0.0183. The warning slide measures what happens when the
+  independence assumption fails: false positives climb from 5.0% at zero
+  correlation to 10.3% at 0.5 and 16.2% at 0.9, which matters because seeds of
+  the same model and neighbouring neurons are rarely independent.</p>
+  <video muted loop playsinline controls preload="metadata"
+         src="media/FisherCombination.mp4"></video>
+  <p class="caption">
+    Yellow: p-values and the combined tail. Green: what combination buys.
+    Red: where the independence assumption breaks. All simulations run in
+    the scene.
+    <a href="FisherCombination.html">Present as full-screen deck</a>
+    (advance with arrow keys).
+  </p>
+</details>
+
+</details>
+
+<details class="topic">
 <summary><h2>Stochastic processes</h2><span class="count">4 animations</span></summary>
 
 <details class="anim">

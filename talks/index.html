@@ -401,7 +401,7 @@ exists as a slide deck for presenting (linked below its video).</p>
 </details>
 
 <details class="topic">
-<summary><h2>Attention and sequence models</h2><span class="count">5 animations</span></summary>
+<summary><h2>Attention and sequence models</h2><span class="count">6 animations</span></summary>
 
 <details class="anim">
 <summary><h3>An LSTM cell, step by step</h3></summary>
@@ -488,6 +488,32 @@ exists as a slide deck for presenting (linked below its video).</p>
     trained; benchmark numbers are quoted from Ravanelli et al. (2018) with
     the table cited on the slide.
     <a href="LiGRU.html">Present as full-screen deck</a>
+    (advance with arrow keys).
+  </p>
+</details>
+
+<details class="anim">
+<summary><h3>From RNN to Transformer</h3></summary>
+  <p>One sentence to translate, and three
+  generations of machinery. A recurrent network reads word by word into a single
+  memory vector, so word six waits for word five and nothing runs in parallel.
+  Sequence-to-sequence models then squeeze the whole sentence into one context
+  vector for the decoder (Sutskever et al., 2014), and the scene measures what
+  that costs: a random recurrent network with a sixteen-number state is asked to
+  give back the first word of a sequence, which it does perfectly after one word,
+  98% of the time after two, 22% after four and at chance by eight. Trained LSTMs
+  push that much further, but the box is still a fixed size. Attention removes the
+  single box by letting the decoder look back at every encoder state (Bahdanau et
+  al., 2015), and the Transformer keeps the attention and drops the recurrence
+  altogether (Vaswani et al., 2017), so every word reaches every other in one step
+  and all positions run at once. The closing table counts the trade: sequential
+  steps and path length fall from n to one, and the price is an n&sup2;
+  attention matrix.</p>
+  <video muted loop playsinline controls preload="metadata"
+         src="media/RnnToTransformer.mp4"></video>
+  <p class="caption">
+    Purple: recurrent state. Green: attention. Yellow: self-attention. The bottleneck ladder is measured in the scene; the attention weights in slide 4 are illustrative.
+    <a href="RnnToTransformer.html">Present as full-screen deck</a>
     (advance with arrow keys).
   </p>
 </details>
@@ -843,7 +869,31 @@ exists as a slide deck for presenting (linked below its video).</p>
 </details>
 
 <details class="topic">
-<summary><h2>Statistics and hypothesis testing</h2><span class="count">2 animations</span></summary>
+<summary><h2>Statistics</h2><span class="count">4 animations</span></summary>
+
+<details class="anim">
+<summary><h3>Pearson correlation, by hand</h3></summary>
+  <p>Six students, hours studied against exam
+  score, worked through one arithmetic step at a time. Measure every point from
+  the averages, which splits the plane into four quadrants; multiply the two
+  deviations, which is positive when both are above or both below average and
+  negative otherwise (five of six agree, summing to 81.00); then divide out the
+  units, giving r&nbsp;=&nbsp;0.964. The same number read two other ways: the
+  cosine of the 15.4&deg; angle between the two deviation vectors, and
+  r&sup2;&nbsp;=&nbsp;0.93, the share of the score spread that lines up with
+  hours. A t-test on four degrees of freedom gives p&nbsp;=&nbsp;0.0019. The
+  closing slide is Anscombe's quartet (1973): four datasets with the same means,
+  variances, fitted line and r&nbsp;=&nbsp;0.816, one of which is a curve and one
+  of which is a single outlier, which is why the scatter plot always comes
+  first and why r says nothing about cause.</p>
+  <video muted loop playsinline controls preload="metadata"
+         src="media/PearsonCorrelation.mp4"></video>
+  <p class="caption">
+    Every number is computed in the scene and matches scipy.
+    <a href="PearsonCorrelation.html">Present as full-screen deck</a>
+    (advance with arrow keys).
+  </p>
+</details>
 
 <details class="anim">
 <summary><h3>Welch's t-test, per neuron</h3></summary>
@@ -902,6 +952,30 @@ exists as a slide deck for presenting (linked below its video).</p>
     Red: where the independence assumption breaks. All simulations run in
     the scene.
     <a href="FisherCombination.html">Present as full-screen deck</a>
+    (advance with arrow keys).
+  </p>
+</details>
+
+<details class="anim">
+<summary><h3>Gaussian process regression</h3></summary>
+  <p>Six noisy measurements of a sine,
+  and the question every fitted line ignores: how sure are we, and where? A
+  Gaussian process makes one assumption, that nearby inputs have similar
+  outputs, written as a kernel whose lengthscale sets how far that similarity
+  reaches. Before any data it is a whole distribution of smooth functions;
+  conditioning on the six points keeps only the functions that pass near them.
+  The uncertainty then behaves as it should: 0.10 at the data, which is the
+  measurement noise, and back to 1.00 at x&nbsp;=&nbsp;5.5, where there is no
+  data and only the prior remains. The lengthscale slide compares 0.4, 1.0 and
+  3.0: too short wiggles through every point, too long flattens the sine, and
+  maximising the log marginal likelihood (&minus;7.07, &minus;6.88,
+  &minus;18.13) picks the middle one without any validation set. Every curve
+  and band is an exact posterior from a Cholesky solve.</p>
+  <video muted loop playsinline controls preload="metadata"
+         src="media/GaussianProcess.mp4"></video>
+  <p class="caption">
+    Yellow: data, posterior mean and &plusmn;2&sigma; band. Purple: posterior draws.
+    <a href="GaussianProcess.html">Present as full-screen deck</a>
     (advance with arrow keys).
   </p>
 </details>

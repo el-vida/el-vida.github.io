@@ -983,7 +983,7 @@ exists as a slide deck for presenting (linked below its video).</p>
 </details>
 
 <details class="topic">
-<summary><h2>Stochastic processes</h2><span class="count">4 animations</span></summary>
+<summary><h2>Stochastic processes</h2><span class="count">5 animations</span></summary>
 
 <details class="anim">
 <summary><h3>Ito's lemma: why stochastic calculus adds a term</h3></summary>
@@ -1004,6 +1004,39 @@ exists as a slide deck for presenting (linked below its video).</p>
   <p class="caption">
     Blue: a real Brownian path. Green: convergent squared increments. Orange: divergent length and the GBM ending.
     <a href="ItoLemma.html">Present as full-screen deck</a>
+    (advance with arrow keys).
+  </p>
+</details>
+
+<details class="anim">
+<summary><h3>The Euler-Maruyama method</h3></summary>
+  <p>How to simulate a stochastic differential equation, built up from plain
+  Euler. Following the slope of dx/dt = &minus;x in 2, 4, 8 and 64 steps halves
+  the error each time the steps double: plain Euler is first order. Adding
+  noise raises one question, how big a random kick belongs in a step of length
+  &Delta;t, and the answer is shown rather than asserted: kicks proportional to
+  &Delta;t make the total noise vanish as you refine (variance 0.25, then 0.063,
+  then 0.004), while kicks proportional to &radic;&Delta;t keep it at exactly 1,
+  because variances add. That gives the whole method in one line,
+  X<sub>n+1</sub> = X<sub>n</sub> + a&Delta;t + b&radic;&Delta;t&nbsp;Z, animated
+  as a drift arrow followed by a random kick.</p>
+  <p>The worked example is the one in Higham's tutorial (SIAM Review, 2001):
+  geometric Brownian motion dX = 2X&nbsp;dt + X&nbsp;dW, which has an exact
+  solution, so every error is measured against the truth on the same Brownian
+  path. On a single path the error jumps around; averaged over 20,000 paths it
+  falls with a measured slope of 0.52, the strong order &frac12;, so halving the
+  error costs four times the steps. If only averages matter, the weak error falls
+  with slope 0.99, order 1, and for this equation the mean of the method is known
+  in closed form, (1+&lambda;&Delta;t)<sup>1/&Delta;t</sup> against
+  e<sup>&lambda;</sup>, which the simulation reproduces. The closing slide points
+  out where the same update has already appeared on this page: the noisy leaky
+  neuron, Langevin sampling and the reverse diffusion sampler.</p>
+  <video muted loop playsinline controls preload="metadata"
+         src="media/EulerMaruyama.mp4"></video>
+  <p class="caption">
+    Blue: drift. Orange: random kicks. Green: the exact solution. Every error
+    and slope is computed in the scene.
+    <a href="EulerMaruyama.html">Present as full-screen deck</a>
     (advance with arrow keys).
   </p>
 </details>
